@@ -1,0 +1,110 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  section?: string;
+  tags?: string[];
+}
+
+const {
+  title,
+  description = 'Modern web application built with Astro and Tailwind CSS',
+  image = '/og-image.jpg',
+  canonical,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  author,
+  section,
+  tags = [],
+} = Astro.props;
+
+const canonicalURL = canonical ? new URL(canonical, Astro.site) : Astro.url;
+const socialImageURL = new URL(image, Astro.url);
+---
+
+<!doctype html>
+<html lang='en' class='h-full'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='description' content={description} />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <meta name='generator' content={Astro.generator} />
+
+    <!-- Canonical URL -->
+    <link rel='canonical' href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property='og:type' content={type} />
+    <meta property='og:url' content={Astro.url} />
+    <meta property='og:title' content={title} />
+    <meta property='og:description' content={description} />
+    <meta property='og:image' content={socialImageURL} />
+    <meta property='og:image:width' content='1200' />
+    <meta property='og:image:height' content='630' />
+    <meta property='og:site_name' content='Astro Tailwind Boilerplate' />
+
+    <!-- Twitter -->
+    <meta property='twitter:card' content='summary_large_image' />
+    <meta property='twitter:url' content={Astro.url} />
+    <meta property='twitter:title' content={title} />
+    <meta property='twitter:description' content={description} />
+    <meta property='twitter:image' content={socialImageURL} />
+
+    <!-- Article specific meta tags -->
+    {
+      type === 'article' && (
+        <>
+          {publishedTime && <meta property='article:published_time' content={publishedTime} />}
+          {modifiedTime && <meta property='article:modified_time' content={modifiedTime} />}
+          {author && <meta property='article:author' content={author} />}
+          {section && <meta property='article:section' content={section} />}
+          {tags.map(tag => (
+            <meta property='article:tag' content={tag} />
+          ))}
+        </>
+      )
+    }
+
+    <!-- Preconnect to external domains -->
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+
+    <!-- Google Fonts -->
+    <link
+      href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
+      rel='stylesheet'
+    />
+
+    <title>{title}</title>
+  </head>
+  <body class='h-full bg-white text-gray-900 antialiased'>
+    <div class='flex min-h-full flex-col'>
+      <slot />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+  
+  /* Global styles */
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  /* Focus styles */
+  *:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+</style>
+
