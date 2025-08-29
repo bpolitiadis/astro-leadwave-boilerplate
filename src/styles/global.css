@@ -56,7 +56,17 @@
 
   /* Container System */
   .container-custom {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 xl:px-16;
+  }
+  
+  /* Section spacing utilities */
+  .section-padding {
+    @apply py-16 sm:py-20 lg:py-24 xl:py-28;
+  }
+  
+  /* Content spacing utilities */
+  .content-spacing {
+    @apply space-y-8 sm:space-y-10 lg:space-y-12;
   }
 
   /* Card Components */

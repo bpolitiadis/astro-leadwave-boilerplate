@@ -23,7 +23,7 @@ const {
     <p class='text-lg text-gray-600 max-w-2xl mx-auto'>{description}</p>
   </div>
 
-  <form id='contact-form' class='space-y-6' enctype='multipart/form-data'>
+  <form id='contact-form' class='space-y-6' enctype='multipart/form-data' novalidate>
     <!-- Personal Information -->
     <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
       <div class='space-y-2'>
@@ -38,7 +38,10 @@ const {
           required
           placeholder='Enter your full name'
           class='form-input'
+          aria-describedby='name-error'
+          aria-invalid='false'
         />
+        <div id='name-error' class='form-error hidden' role='alert'></div>
       </div>
 
       <div class='space-y-2'>
@@ -53,7 +56,10 @@ const {
           required
           placeholder='your.email@example.com'
           class='form-input'
+          aria-describedby='email-error'
+          aria-invalid='false'
         />
+        <div id='email-error' class='form-error hidden' role='alert'></div>
       </div>
     </div>
 
@@ -68,7 +74,10 @@ const {
           id='phone'
           placeholder='+1 (555) 123-4567'
           class='form-input'
+          aria-describedby='phone-error'
+          aria-invalid='false'
         />
+        <div id='phone-error' class='form-error hidden' role='alert'></div>
       </div>
 
       <div class='space-y-2'>
@@ -92,7 +101,7 @@ const {
           <span class='text-red-500 mr-1'>*</span>
           Subject
         </label>
-        <select name='subject' id='subject' required class='form-input'>
+        <select name='subject' id='subject' required class='form-input' aria-describedby='subject-error' aria-invalid='false'>
           <option value=''>Please select a subject</option>
           <option value='general'>General Inquiry</option>
           <option value='support'>Technical Support</option>
@@ -101,6 +110,7 @@ const {
           <option value='sales'>Sales Inquiry</option>
           <option value='other'>Other</option>
         </select>
+        <div id='subject-error' class='form-error hidden' role='alert'></div>
       </div>
 
       <div class='space-y-2'>
@@ -135,11 +145,14 @@ const {
         required
         placeholder='Please provide details about your inquiry...'
         class='form-input resize-none'
+        aria-describedby='message-error char-count'
+        aria-invalid='false'
       ></textarea>
       <div class='flex justify-between text-sm text-gray-500'>
         <span>Minimum 10 characters</span>
         <span id='char-count'>0 characters</span>
       </div>
+      <div id='message-error' class='form-error hidden' role='alert'></div>
     </div>
 
     <!-- File Upload -->
@@ -163,6 +176,7 @@ const {
             multiple
             accept='.pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar'
             class='hidden'
+            aria-describedby='attachment-error'
           />
         </div>
         <p class='text-xs text-gray-500 mt-2'>
@@ -170,6 +184,7 @@ const {
         </p>
       </div>
       <div id='file-list' class='mt-2 space-y-2'></div>
+      <div id='attachment-error' class='form-error hidden' role='alert'></div>
     </div>
 
     <!-- Consent -->
@@ -182,6 +197,8 @@ const {
             type='checkbox'
             required
             class='h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500'
+            aria-describedby='consent-error'
+            aria-invalid='false'
           />
         </div>
         <div class='ml-3 text-sm'>
@@ -192,6 +209,7 @@ const {
           </label>
         </div>
       </div>
+      <div id='consent-error' class='form-error mt-2 hidden' role='alert'></div>
     </div>
 
     <!-- Action Buttons -->
@@ -218,7 +236,7 @@ const {
     </div>
   </form>
 
-  <div id='form-message' class='mt-6 hidden'></div>
+  <div id='form-message' class='mt-6 hidden' role='alert'></div>
 </div>
 
 <script>
@@ -236,6 +254,120 @@ const {
   const charCount = document.getElementById('char-count') as HTMLSpanElement;
   const fileInput = document.getElementById('attachment') as HTMLInputElement;
   const fileList = document.getElementById('file-list') as HTMLDivElement;
+
+  // Validation functions
+  function validateName(name: string): string | null {
+    if (!name || name.trim().length < 2) {
+      return 'Name must be at least 2 characters long';
+    }
+    return null;
+  }
+
+  function validateEmail(email: string): string | null {
+    if (!email) {
+      return 'Email is required';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address';
+    }
+    return null;
+  }
+
+  function validatePhone(phone: string): string | null {
+    if (!phone) return null; // Optional field
+    const phoneRegex = /^[+]?[1-9][\d]{0,15}$/;
+    if (!phoneRegex.test(phone.replace(/[\s\-()]/g, ''))) {
+      return 'Please enter a valid phone number';
+    }
+    return null;
+  }
+
+  function validateSubject(subject: string): string | null {
+    if (!subject || subject === '') {
+      return 'Please select a subject';
+    }
+    return null;
+  }
+
+  function validateMessage(message: string): string | null {
+    if (!message || message.trim().length < 10) {
+      return 'Message must be at least 10 characters long';
+    }
+    return null;
+  }
+
+  function validateConsent(consent: boolean): string | null {
+    if (!consent) {
+      return 'You must agree to the terms and conditions';
+    }
+    return null;
+  }
+
+  function validateFile(file: File | null): string | null {
+    if (!file) return null; // Optional field
+    
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    const allowedTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain',
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/gif',
+      'application/zip',
+      'application/x-rar-compressed'
+    ];
+
+    if (file.size > maxSize) {
+      return 'File size must be less than 10MB';
+    }
+
+    if (!allowedTypes.includes(file.type)) {
+      return 'File type not allowed. Please upload PDF, DOC, DOCX, TXT, JPG, PNG, GIF, ZIP, or RAR files';
+    }
+
+    return null;
+  }
+
+  // Error display functions
+  function showError(fieldId: string, message: string) {
+    const errorDiv = document.getElementById(`${fieldId}-error`) as HTMLDivElement;
+    const field = document.getElementById(fieldId) as HTMLInputElement;
+    
+    if (errorDiv && field) {
+      errorDiv.textContent = message;
+      errorDiv.classList.remove('hidden');
+      field.setAttribute('aria-invalid', 'true');
+      field.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+    }
+  }
+
+  function clearError(fieldId: string) {
+    const errorDiv = document.getElementById(`${fieldId}-error`) as HTMLDivElement;
+    const field = document.getElementById(fieldId) as HTMLInputElement;
+    
+    if (errorDiv && field) {
+      errorDiv.classList.add('hidden');
+      field.setAttribute('aria-invalid', 'false');
+      field.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+    }
+  }
+
+  function clearAllErrors() {
+    const errorDivs = form.querySelectorAll('[id$="-error"]');
+    errorDivs.forEach(div => {
+      (div as HTMLDivElement).classList.add('hidden');
+    });
+    
+    const fields = form.querySelectorAll('input, textarea, select');
+    fields.forEach(field => {
+      (field as HTMLInputElement).setAttribute('aria-invalid', 'false');
+      (field as HTMLInputElement).classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+    });
+  }
 
   // Character counter for message
   if (messageTextarea && charCount) {
@@ -281,9 +413,38 @@ const {
     });
   }
 
-  // Track form field interactions
+  // Real-time validation
   const formFields = form.querySelectorAll('input, textarea, select');
   formFields.forEach(field => {
+    field.addEventListener('blur', () => {
+      const fieldId = (field as HTMLInputElement).id;
+      const value = (field as HTMLInputElement).value;
+      
+      // Clear previous error
+      clearError(fieldId);
+      
+      // Validate based on field type
+      if (fieldId === 'name') {
+        const error = validateName(value);
+        if (error) showError(fieldId, error);
+      } else if (fieldId === 'email') {
+        const error = validateEmail(value);
+        if (error) showError(fieldId, error);
+      } else if (fieldId === 'phone') {
+        const error = validatePhone(value);
+        if (error) showError(fieldId, error);
+      } else if (fieldId === 'subject') {
+        const error = validateSubject(value);
+        if (error) showError(fieldId, error);
+      } else if (fieldId === 'message') {
+        const error = validateMessage(value);
+        if (error) showError(fieldId, error);
+      } else if (fieldId === 'consent') {
+        const error = validateConsent((field as HTMLInputElement).checked);
+        if (error) showError(fieldId, error);
+      }
+    });
+
     field.addEventListener('focus', () => {
       logComponentLifecycle('ContactForm', 'field_focus', {
         field: (field as HTMLInputElement).name || (field as HTMLInputElement).id,
@@ -298,13 +459,81 @@ const {
     });
   });
 
-  // Track form submission
+  // Form submission
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
     logComponentLifecycle('ContactForm', 'form_submit_attempt', {
       hasAttachment: !!(fileInput?.files?.length),
     });
+
+    // Clear all previous errors
+    clearAllErrors();
+
+    // Get form data
+    const formData = new FormData(form);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const phone = formData.get('phone') as string;
+    const subject = formData.get('subject') as string;
+    const message = formData.get('message') as string;
+    const consent = formData.get('consent') === 'on';
+    const attachment = fileInput?.files?.[0] || null;
+
+    // Validate all fields
+    let hasErrors = false;
+    
+    const nameError = validateName(name);
+    if (nameError) {
+      showError('name', nameError);
+      hasErrors = true;
+    }
+
+    const emailError = validateEmail(email);
+    if (emailError) {
+      showError('email', emailError);
+      hasErrors = true;
+    }
+
+    const phoneError = validatePhone(phone);
+    if (phoneError) {
+      showError('phone', phoneError);
+      hasErrors = true;
+    }
+
+    const subjectError = validateSubject(subject);
+    if (subjectError) {
+      showError('subject', subjectError);
+      hasErrors = true;
+    }
+
+    const messageError = validateMessage(message);
+    if (messageError) {
+      showError('message', messageError);
+      hasErrors = true;
+    }
+
+    const consentError = validateConsent(consent);
+    if (consentError) {
+      showError('consent', consentError);
+      hasErrors = true;
+    }
+
+    if (attachment) {
+      const fileError = validateFile(attachment);
+      if (fileError) {
+        showError('attachment', fileError);
+        hasErrors = true;
+      }
+    }
+
+    if (hasErrors) {
+      logComponentLifecycle('ContactForm', 'form_submit_validation_error', {
+        errors: ['validation_failed'],
+      });
+      showMessage('Please fix the errors below and try again.', 'error');
+      return;
+    }
 
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
@@ -316,7 +545,6 @@ const {
     `;
 
     try {
-      const formData = new FormData(form);
       const response = await fetch('/api/contact', {
         method: 'POST',
         body: formData,
@@ -330,6 +558,7 @@ const {
         form.reset();
         if (fileList) fileList.innerHTML = '';
         if (charCount) charCount.textContent = '0 characters';
+        clearAllErrors();
       } else {
         logComponentLifecycle('ContactForm', 'form_submit_validation_error', {
           errors: Object.keys(result.errors || {}),
@@ -367,18 +596,9 @@ const {
   }
 
   function displayValidationErrors(errors: Record<string, string>) {
-    // Clear previous error messages
-    form.querySelectorAll('.form-error').forEach(el => el.remove());
-
-    // Display new error messages
+    // Display server-side validation errors
     Object.entries(errors).forEach(([field, message]) => {
-      const fieldElement = form.querySelector(`[name="${field}"]`) as HTMLElement;
-      if (fieldElement) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'form-error';
-        errorDiv.textContent = message;
-        fieldElement.parentNode?.appendChild(errorDiv);
-      }
+      showError(field, message);
     });
   }
 </script>

@@ -2,6 +2,7 @@
 import { logPageView, logComponentLifecycle } from '../lib/logger';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import boilerplateImage6 from '../assets/images/boilerplate-image-6.png';
 
 export interface Props {
   title: string;
@@ -12,8 +13,11 @@ export interface Props {
 const {
   title,
   description = 'Production-ready Astro + Tailwind CSS boilerplate with TypeScript, ESLint, Prettier, Playwright, and SEO optimization',
-  image = '/og-image.jpg',
+  image,
 } = Astro.props;
+
+// Use the optimized image if provided, otherwise use our default
+const ogImage = image || boilerplateImage6.src;
 
 // Log page view and component lifecycle
 logPageView(Astro.url.pathname);
@@ -35,11 +39,11 @@ logComponentLifecycle('Layout', 'render', {
     <meta property='og:type' content='website' />
     <meta property='og:title' content={title} />
     <meta property='og:description' content={description} />
-    <meta property='og:image' content={new URL(image, Astro.url)} />
+    <meta property='og:image' content={new URL(ogImage, Astro.url)} />
     <meta name='twitter:card' content='summary_large_image' />
     <meta name='twitter:title' content={title} />
     <meta name='twitter:description' content={description} />
-    <meta name='twitter:image' content={new URL(image, Astro.url)} />
+    <meta name='twitter:image' content={new URL(ogImage, Astro.url)} />
   </head>
   <body>
     <Header />

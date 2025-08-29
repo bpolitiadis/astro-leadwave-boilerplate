@@ -5,27 +5,54 @@ import { logComponentLifecycle } from '../lib/logger';
 logComponentLifecycle('Header', 'render', {
   pathname: Astro.url.pathname,
 });
+
+const currentPath = Astro.url.pathname;
 ---
 
-<header class='bg-white shadow-sm border-b border-gray-200'>
+<header class='sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100'>
   <div class='container-custom'>
-    <div class='flex justify-between items-center h-16'>
+    <div class='flex justify-between items-center h-20'>
       <div class='flex items-center'>
-        <a href='/' class='flex-shrink-0'>
-          <img class='h-8 w-auto' src='/favicon.svg' alt='Logo' />
+        <a href='/' class='flex-shrink-0 group'>
+          <div class='flex items-center space-x-3'>
+            <div class='w-10 h-10 bg-gradient-to-br from-primary-500 to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform'>
+              <svg class='w-6 h-6 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 10V3L4 14h7v7l9-11h-7z' />
+              </svg>
+            </div>
+            <span class='text-xl font-bold text-gray-900 hidden sm:block'>Astro Boilerplate</span>
+          </div>
         </a>
-        <nav class='ml-10 flex space-x-8' role='navigation' aria-label='Main navigation'>
+        <nav class='ml-8 sm:ml-12 flex space-x-1' role='navigation' aria-label='Main navigation'>
           <a
             href='/'
-            class='nav-link'
+            class={`px-3 sm:px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+              currentPath === '/' 
+                ? 'bg-gray-900 text-white' 
+                : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+            }`}
             >Home</a
           >
           <a
             href='/contact'
-            class='nav-link'
+            class={`px-3 sm:px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+              currentPath === '/contact' 
+                ? 'bg-gray-900 text-white' 
+                : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+            }`}
             >Contact</a
           >
         </nav>
+      </div>
+      
+      <!-- CTA Button -->
+      <div class='hidden md:block'>
+        <a
+          href='/contact'
+          class='px-6 py-2.5 bg-gray-900 text-white rounded-xl font-semibold text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-colors'
+        >
+          Get Started
+        </a>
       </div>
     </div>
   </div>
