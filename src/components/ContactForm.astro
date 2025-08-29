@@ -1,0 +1,384 @@
+---
+import { logComponentLifecycle } from '../lib/logger';
+
+// Log component lifecycle
+logComponentLifecycle('ContactForm', 'render', {
+  pathname: Astro.url.pathname,
+});
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Contact Us',
+  description = 'Get in touch with us for any questions or support.',
+} = Astro.props;
+---
+
+<div class='bg-white rounded-xl shadow-lg border border-gray-100 p-8 md:p-10'>
+  <div class='text-center mb-8'>
+    <h2 class='text-3xl font-bold text-gray-900 mb-3'>{title}</h2>
+    <p class='text-lg text-gray-600 max-w-2xl mx-auto'>{description}</p>
+  </div>
+
+  <form id='contact-form' class='space-y-6' enctype='multipart/form-data'>
+    <!-- Personal Information -->
+    <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
+      <div class='space-y-2'>
+        <label for='name' class='form-label flex items-center'>
+          <span class='text-red-500 mr-1'>*</span>
+          Full Name
+        </label>
+        <input
+          type='text'
+          name='name'
+          id='name'
+          required
+          placeholder='Enter your full name'
+          class='form-input'
+        />
+      </div>
+
+      <div class='space-y-2'>
+        <label for='email' class='form-label flex items-center'>
+          <span class='text-red-500 mr-1'>*</span>
+          Email Address
+        </label>
+        <input
+          type='email'
+          name='email'
+          id='email'
+          required
+          placeholder='your.email@example.com'
+          class='form-input'
+        />
+      </div>
+    </div>
+
+    <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
+      <div class='space-y-2'>
+        <label for='phone' class='form-label'>
+          Phone Number
+        </label>
+        <input
+          type='tel'
+          name='phone'
+          id='phone'
+          placeholder='+1 (555) 123-4567'
+          class='form-input'
+        />
+      </div>
+
+      <div class='space-y-2'>
+        <label for='company' class='form-label'>
+          Company
+        </label>
+        <input
+          type='text'
+          name='company'
+          id='company'
+          placeholder='Your company name'
+          class='form-input'
+        />
+      </div>
+    </div>
+
+    <!-- Subject and Priority -->
+    <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
+      <div class='space-y-2'>
+        <label for='subject' class='form-label flex items-center'>
+          <span class='text-red-500 mr-1'>*</span>
+          Subject
+        </label>
+        <select name='subject' id='subject' required class='form-input'>
+          <option value=''>Please select a subject</option>
+          <option value='general'>General Inquiry</option>
+          <option value='support'>Technical Support</option>
+          <option value='partnership'>Partnership Opportunity</option>
+          <option value='feedback'>Feedback & Suggestions</option>
+          <option value='sales'>Sales Inquiry</option>
+          <option value='other'>Other</option>
+        </select>
+      </div>
+
+      <div class='space-y-2'>
+        <label class='form-label'>Priority Level</label>
+        <div class='flex flex-wrap gap-4'>
+          <label class='flex items-center'>
+            <input type='radio' name='priority' value='low' class='w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500' />
+            <span class='ml-2 text-sm text-gray-700'>Low</span>
+          </label>
+          <label class='flex items-center'>
+            <input type='radio' name='priority' value='medium' checked class='w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500' />
+            <span class='ml-2 text-sm text-gray-700'>Medium</span>
+          </label>
+          <label class='flex items-center'>
+            <input type='radio' name='priority' value='high' class='w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500' />
+            <span class='ml-2 text-sm text-gray-700'>High</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div class='space-y-2'>
+      <label for='message' class='form-label flex items-center'>
+        <span class='text-red-500 mr-1'>*</span>
+        Message
+      </label>
+      <textarea
+        name='message'
+        id='message'
+        rows='6'
+        required
+        placeholder='Please provide details about your inquiry...'
+        class='form-input resize-none'
+      ></textarea>
+      <div class='flex justify-between text-sm text-gray-500'>
+        <span>Minimum 10 characters</span>
+        <span id='char-count'>0 characters</span>
+      </div>
+    </div>
+
+    <!-- File Upload -->
+    <div class='space-y-2'>
+      <label for='attachment' class='form-label'>
+        Attachments (optional)
+      </label>
+      <div class='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-400 transition-colors'>
+        <svg class='mx-auto h-12 w-12 text-gray-400' stroke='currentColor' fill='none' viewBox='0 0 48 48'>
+          <path d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' />
+        </svg>
+        <div class='mt-4'>
+          <label for='attachment' class='cursor-pointer'>
+            <span class='text-primary-600 hover:text-primary-500 font-medium'>Upload files</span>
+            <span class='text-gray-500'> or drag and drop</span>
+          </label>
+          <input
+            type='file'
+            name='attachment'
+            id='attachment'
+            multiple
+            accept='.pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar'
+            class='hidden'
+          />
+        </div>
+        <p class='text-xs text-gray-500 mt-2'>
+          PDF, DOC, DOCX, TXT, JPG, PNG, GIF, ZIP, RAR up to 10MB each
+        </p>
+      </div>
+      <div id='file-list' class='mt-2 space-y-2'></div>
+    </div>
+
+    <!-- Consent -->
+    <div class='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+      <div class='flex items-start'>
+        <div class='flex items-center h-5'>
+          <input
+            id='consent'
+            name='consent'
+            type='checkbox'
+            required
+            class='h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500'
+          />
+        </div>
+        <div class='ml-3 text-sm'>
+          <label for='consent' class='text-gray-700'>
+            I agree to the <a href='/terms' class='text-primary-600 hover:text-primary-500 underline'>terms and conditions</a> and 
+            <a href='/privacy' class='text-primary-600 hover:text-primary-500 underline'> privacy policy</a>
+            <span class='text-red-500 ml-1'>*</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class='flex flex-col sm:flex-row gap-4 pt-6'>
+      <button
+        type='submit'
+        id='submit-btn'
+        class='btn btn-primary flex-1 text-base py-3 px-6 flex items-center justify-center'
+      >
+        <svg class='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 19l9 2-9-18-9 18 9-2zm0 0v-8' />
+        </svg>
+        Send Message
+      </button>
+      <button
+        type='reset'
+        class='btn btn-secondary flex-1 text-base py-3 px-6 flex items-center justify-center'
+      >
+        <svg class='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15' />
+        </svg>
+        Reset Form
+      </button>
+    </div>
+  </form>
+
+  <div id='form-message' class='mt-6 hidden'></div>
+</div>
+
+<script>
+  import { logComponentLifecycle } from '../lib/logger';
+
+  // Log when contact form becomes interactive
+  logComponentLifecycle('ContactForm', 'interactive', {
+    pathname: window.location.pathname,
+  });
+
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const messageDiv = document.getElementById('form-message') as HTMLDivElement;
+  const messageTextarea = document.getElementById('message') as HTMLTextAreaElement;
+  const charCount = document.getElementById('char-count') as HTMLSpanElement;
+  const fileInput = document.getElementById('attachment') as HTMLInputElement;
+  const fileList = document.getElementById('file-list') as HTMLDivElement;
+
+  // Character counter for message
+  if (messageTextarea && charCount) {
+    messageTextarea.addEventListener('input', () => {
+      const count = messageTextarea.value.length;
+      charCount.textContent = `${count} characters`;
+      
+      if (count < 10) {
+        charCount.classList.add('text-red-500');
+        charCount.classList.remove('text-gray-500');
+      } else {
+        charCount.classList.remove('text-red-500');
+        charCount.classList.add('text-gray-500');
+      }
+    });
+  }
+
+  // File upload handling
+  if (fileInput && fileList) {
+    fileInput.addEventListener('change', () => {
+      fileList.innerHTML = '';
+      const files = Array.from(fileInput.files || []);
+      
+      files.forEach((file) => {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'flex items-center justify-between p-2 bg-white rounded border';
+        fileItem.innerHTML = `
+          <div class='flex items-center'>
+            <svg class='w-4 h-4 text-gray-400 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
+            </svg>
+            <span class='text-sm text-gray-700'>${file.name}</span>
+            <span class='text-xs text-gray-500 ml-2'>(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+          </div>
+          <button type='button' class='text-red-500 hover:text-red-700' onclick='this.parentElement.remove()'>
+            <svg class='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' />
+            </svg>
+          </button>
+        `;
+        fileList.appendChild(fileItem);
+      });
+    });
+  }
+
+  // Track form field interactions
+  const formFields = form.querySelectorAll('input, textarea, select');
+  formFields.forEach(field => {
+    field.addEventListener('focus', () => {
+      logComponentLifecycle('ContactForm', 'field_focus', {
+        field: (field as HTMLInputElement).name || (field as HTMLInputElement).id,
+      });
+    });
+
+    field.addEventListener('blur', () => {
+      logComponentLifecycle('ContactForm', 'field_blur', {
+        field: (field as HTMLInputElement).name || (field as HTMLInputElement).id,
+        hasValue: !!(field as HTMLInputElement).value,
+      });
+    });
+  });
+
+  // Track form submission
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    logComponentLifecycle('ContactForm', 'form_submit_attempt', {
+      hasAttachment: !!(fileInput?.files?.length),
+    });
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+      <svg class='animate-spin -ml-1 mr-3 h-5 w-5 text-white' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>
+        <circle class='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' stroke-width='4'></circle>
+        <path class='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path>
+      </svg>
+      Sending...
+    `;
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        logComponentLifecycle('ContactForm', 'form_submit_success');
+        showMessage("Message sent successfully! We'll get back to you soon.", 'success');
+        form.reset();
+        if (fileList) fileList.innerHTML = '';
+        if (charCount) charCount.textContent = '0 characters';
+      } else {
+        logComponentLifecycle('ContactForm', 'form_submit_validation_error', {
+          errors: Object.keys(result.errors || {}),
+        });
+        showMessage('Please fix the errors below and try again.', 'error');
+        displayValidationErrors(result.errors);
+      }
+    } catch (error) {
+      logComponentLifecycle('ContactForm', 'form_submit_error', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+      showMessage('An error occurred. Please try again later.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `
+        <svg class='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 19l9 2-9-18-9 18 9-2zm0 0v-8' />
+        </svg>
+        Send Message
+      `;
+    }
+  });
+
+  function showMessage(message: string, type: 'success' | 'error') {
+    messageDiv.textContent = message;
+    messageDiv.className = `mt-6 ${type === 'success' ? 'message-success' : 'message-error'}`;
+    messageDiv.classList.remove('hidden');
+    
+    // Auto-hide success messages after 5 seconds
+    if (type === 'success') {
+      setTimeout(() => {
+        messageDiv.classList.add('hidden');
+      }, 5000);
+    }
+  }
+
+  function displayValidationErrors(errors: Record<string, string>) {
+    // Clear previous error messages
+    form.querySelectorAll('.form-error').forEach(el => el.remove());
+
+    // Display new error messages
+    Object.entries(errors).forEach(([field, message]) => {
+      const fieldElement = form.querySelector(`[name="${field}"]`) as HTMLElement;
+      if (fieldElement) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'form-error';
+        errorDiv.textContent = message;
+        fieldElement.parentNode?.appendChild(errorDiv);
+      }
+    });
+  }
+</script>
