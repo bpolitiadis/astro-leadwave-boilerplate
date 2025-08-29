@@ -23,7 +23,7 @@ const {
     <p class='text-lg text-gray-600 max-w-2xl mx-auto'>{description}</p>
   </div>
 
-  <form id='contact-form' class='space-y-6' enctype='multipart/form-data' novalidate>
+  <form id='contact-form' class='space-y-6' enctype='multipart/form-data' novalidate data-testid='contact-form'>
     <!-- Personal Information -->
     <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
       <div class='space-y-2'>
@@ -35,13 +35,14 @@ const {
           type='text'
           name='name'
           id='name'
+          data-testid='contact-form-name'
           required
           placeholder='Enter your full name'
           class='form-input'
           aria-describedby='name-error'
           aria-invalid='false'
         />
-        <div id='name-error' class='form-error hidden' role='alert'></div>
+        <div id='name-error' class='form-error hidden' role='alert' data-testid='contact-form-name-error'></div>
       </div>
 
       <div class='space-y-2'>
@@ -53,13 +54,14 @@ const {
           type='email'
           name='email'
           id='email'
+          data-testid='contact-form-email'
           required
           placeholder='your.email@example.com'
           class='form-input'
           aria-describedby='email-error'
           aria-invalid='false'
         />
-        <div id='email-error' class='form-error hidden' role='alert'></div>
+        <div id='email-error' class='form-error hidden' role='alert' data-testid='contact-form-email-error'></div>
       </div>
     </div>
 
@@ -72,12 +74,13 @@ const {
           type='tel'
           name='phone'
           id='phone'
+          data-testid='contact-form-phone'
           placeholder='+1 (555) 123-4567'
           class='form-input'
           aria-describedby='phone-error'
           aria-invalid='false'
         />
-        <div id='phone-error' class='form-error hidden' role='alert'></div>
+        <div id='phone-error' class='form-error hidden' role='alert' data-testid='contact-form-phone-error'></div>
       </div>
 
       <div class='space-y-2'>
@@ -88,6 +91,7 @@ const {
           type='text'
           name='company'
           id='company'
+          data-testid='contact-form-company'
           placeholder='Your company name'
           class='form-input'
         />
@@ -101,7 +105,7 @@ const {
           <span class='text-red-500 mr-1'>*</span>
           Subject
         </label>
-        <select name='subject' id='subject' required class='form-input' aria-describedby='subject-error' aria-invalid='false'>
+        <select name='subject' id='subject' data-testid='contact-form-subject' required class='form-input' aria-describedby='subject-error' aria-invalid='false'>
           <option value=''>Please select a subject</option>
           <option value='general'>General Inquiry</option>
           <option value='support'>Technical Support</option>
@@ -110,22 +114,22 @@ const {
           <option value='sales'>Sales Inquiry</option>
           <option value='other'>Other</option>
         </select>
-        <div id='subject-error' class='form-error hidden' role='alert'></div>
+        <div id='subject-error' class='form-error hidden' role='alert' data-testid='contact-form-subject-error'></div>
       </div>
 
       <div class='space-y-2'>
         <label class='form-label'>Priority Level</label>
-        <div class='flex flex-wrap gap-4'>
+        <div class='flex flex-wrap gap-4' data-testid='contact-form-priority'>
           <label class='flex items-center'>
-            <input type='radio' name='priority' value='low' class='w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500' />
+            <input type='radio' name='priority' value='low' data-testid='contact-form-priority-low' class='w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500' />
             <span class='ml-2 text-sm text-gray-700'>Low</span>
           </label>
           <label class='flex items-center'>
-            <input type='radio' name='priority' value='medium' checked class='w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500' />
+            <input type='radio' name='priority' value='medium' data-testid='contact-form-priority-medium' checked class='w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500' />
             <span class='ml-2 text-sm text-gray-700'>Medium</span>
           </label>
           <label class='flex items-center'>
-            <input type='radio' name='priority' value='high' class='w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500' />
+            <input type='radio' name='priority' value='high' data-testid='contact-form-priority-high' class='w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500' />
             <span class='ml-2 text-sm text-gray-700'>High</span>
           </label>
         </div>
@@ -141,6 +145,7 @@ const {
       <textarea
         name='message'
         id='message'
+        data-testid='contact-form-message'
         rows='6'
         required
         placeholder='Please provide details about your inquiry...'
@@ -150,9 +155,9 @@ const {
       ></textarea>
       <div class='flex justify-between text-sm text-gray-500'>
         <span>Minimum 10 characters</span>
-        <span id='char-count'>0 characters</span>
+        <span id='char-count' data-testid='contact-form-char-count'>0 characters</span>
       </div>
-      <div id='message-error' class='form-error hidden' role='alert'></div>
+      <div id='message-error' class='form-error hidden' role='alert' data-testid='contact-form-message-error'></div>
     </div>
 
     <!-- File Upload -->
@@ -160,7 +165,7 @@ const {
       <label for='attachment' class='form-label'>
         Attachments (optional)
       </label>
-      <div class='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-400 transition-colors'>
+      <div class='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-400 transition-colors' data-testid='contact-form-file-upload'>
         <svg class='mx-auto h-12 w-12 text-gray-400' stroke='currentColor' fill='none' viewBox='0 0 48 48'>
           <path d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' />
         </svg>
@@ -173,6 +178,7 @@ const {
             type='file'
             name='attachment'
             id='attachment'
+            data-testid='contact-form-file'
             multiple
             accept='.pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar'
             class='hidden'
@@ -183,18 +189,19 @@ const {
           PDF, DOC, DOCX, TXT, JPG, PNG, GIF, ZIP, RAR up to 10MB each
         </p>
       </div>
-      <div id='file-list' class='mt-2 space-y-2'></div>
-      <div id='attachment-error' class='form-error hidden' role='alert'></div>
+      <div id='file-list' class='mt-2 space-y-2' data-testid='contact-form-file-list'></div>
+      <div id='attachment-error' class='form-error hidden' role='alert' data-testid='contact-form-file-error'></div>
     </div>
 
     <!-- Consent -->
-    <div class='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+    <div class='bg-blue-50 border border-blue-200 rounded-lg p-4' data-testid='contact-form-consent-section'>
       <div class='flex items-start'>
         <div class='flex items-center h-5'>
           <input
             id='consent'
             name='consent'
             type='checkbox'
+            data-testid='contact-form-consent'
             required
             class='h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500'
             aria-describedby='consent-error'
@@ -209,14 +216,15 @@ const {
           </label>
         </div>
       </div>
-      <div id='consent-error' class='form-error mt-2 hidden' role='alert'></div>
+      <div id='consent-error' class='form-error mt-2 hidden' role='alert' data-testid='contact-form-consent-error'></div>
     </div>
 
     <!-- Action Buttons -->
-    <div class='flex flex-col sm:flex-row gap-4 pt-6'>
+    <div class='flex flex-col sm:flex-row gap-4 pt-6' data-testid='contact-form-actions'>
       <button
         type='submit'
         id='submit-btn'
+        data-testid='contact-form-submit'
         class='btn btn-primary flex-1 text-base py-3 px-6 flex items-center justify-center'
       >
         <svg class='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -226,6 +234,7 @@ const {
       </button>
       <button
         type='reset'
+        data-testid='contact-form-reset'
         class='btn btn-secondary flex-1 text-base py-3 px-6 flex items-center justify-center'
       >
         <svg class='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -236,7 +245,7 @@ const {
     </div>
   </form>
 
-  <div id='form-message' class='mt-6 hidden' role='alert'></div>
+  <div id='form-message' class='mt-6 hidden' role='alert' data-testid='contact-form-status'></div>
 </div>
 
 <script>

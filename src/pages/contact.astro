@@ -13,17 +13,17 @@ logComponentLifecycle('ContactPage', 'render', {
 
 <Layout title='Contact Us - Astro Tailwind Boilerplate'>
   <!-- Hero Section -->
-  <section class='relative min-h-screen flex items-center bg-gradient-to-br from-slate-50 via-white to-blue-50'>
+  <section class='relative min-h-screen flex items-center bg-gradient-to-br from-slate-50 via-white to-blue-50' data-testid='contact-hero'>
     <div class='absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.05),transparent_50%)]'></div>
     <div class='container-custom section-padding relative z-10'>
       <div class='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center'>
         <div class='text-center lg:text-left content-spacing max-w-2xl mx-auto lg:mx-0'>
           <div class='space-y-6 lg:space-y-8'>
-            <h1 class='text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-tight'>
+            <h1 class='text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-tight' data-testid='contact-hero-title'>
               Get in 
               <span class='bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent'>Touch</span>
             </h1>
-            <p class='text-lg sm:text-xl lg:text-2xl text-gray-600 font-light leading-relaxed'>
+            <p class='text-lg sm:text-xl lg:text-2xl text-gray-600 font-light leading-relaxed' data-testid='contact-hero-description'>
               Ready to start your next project? Have questions about our services? 
               We'd love to hear from you. Fill out the form below and we'll get back to you within 24 hours.
             </p>
@@ -31,7 +31,7 @@ logComponentLifecycle('ContactPage', 'render', {
         </div>
         
         <!-- Contact Hero Image -->
-        <div class='relative mt-12 lg:mt-0'>
+        <div class='relative mt-12 lg:mt-0' data-testid='contact-hero-image'>
           <div class='relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-50 to-indigo-100 p-6 lg:p-8'>
             <Image
               src={boilerplateImage5}
@@ -52,21 +52,21 @@ logComponentLifecycle('ContactPage', 'render', {
   </section>
 
   <!-- Contact Form Section -->
-  <section class='section-padding bg-white'>
+  <section class='section-padding bg-white' data-testid='contact-form-section'>
     <div class='container-custom'>
       <div class='max-w-5xl mx-auto'>
         <div class='text-center mb-16 lg:mb-20'>
           <div class='content-spacing'>
-            <h2 class='text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight'>
+            <h2 class='text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight' data-testid='contact-form-title'>
               <span class='bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent'>Send us a Message</span>
             </h2>
-            <p class='text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed'>
+            <p class='text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed' data-testid='contact-form-description'>
               Tell us about your project or inquiry. We are here to help!
             </p>
           </div>
         </div>
         
-        <div class='bg-white border border-gray-100 rounded-3xl p-6 lg:p-10 xl:p-12 shadow-xl'>
+        <div class='bg-white border border-gray-100 rounded-3xl p-6 lg:p-10 xl:p-12 shadow-xl' data-testid='contact-form-container'>
           <ContactForm />
         </div>
       </div>
@@ -74,7 +74,7 @@ logComponentLifecycle('ContactPage', 'render', {
   </section>
 
   <!-- Contact Information Section -->
-  <section class='section-padding bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden'>
+  <section class='section-padding bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden' data-testid='contact-info-section'>
     <!-- Background Pattern -->
     <div class='absolute inset-0 opacity-10'>
       <div class='absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(59,130,246,0.3),transparent_50%)]'></div>
@@ -83,10 +83,10 @@ logComponentLifecycle('ContactPage', 'render', {
     <div class='container-custom relative z-10'>
       <div class='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20'>
         <!-- Contact Info -->
-        <div class='content-spacing'>
+        <div class='content-spacing' data-testid='contact-info'>
           <div class='space-y-6 lg:space-y-8'>
-            <h2 class='text-3xl sm:text-4xl font-bold text-gray-900'>Contact Information</h2>
-            <p class='text-lg sm:text-xl text-gray-600 leading-relaxed'>
+            <h2 class='text-3xl sm:text-4xl font-bold text-gray-900' data-testid='contact-info-title'>Contact Information</h2>
+            <p class='text-lg sm:text-xl text-gray-600 leading-relaxed' data-testid='contact-info-description'>
               Reach out to us through any of these channels. We're here to help bring your vision to life.
             </p>
           </div>
@@ -135,9 +135,9 @@ logComponentLifecycle('ContactPage', 'render', {
         </div>
 
         <!-- FAQ Section -->
-        <div class='content-spacing'>
+        <div class='content-spacing' data-testid='contact-faq'>
           <div class='space-y-6 lg:space-y-8'>
-            <h2 class='text-3xl sm:text-4xl font-bold text-gray-900'>Frequently Asked Questions</h2>
+            <h2 class='text-3xl sm:text-4xl font-bold text-gray-900' data-testid='contact-faq-title'>Frequently Asked Questions</h2>
           </div>
           
           <div class='space-y-6'>

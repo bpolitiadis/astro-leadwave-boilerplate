@@ -9,11 +9,11 @@ logComponentLifecycle('Header', 'render', {
 const currentPath = Astro.url.pathname;
 ---
 
-<header class='sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100'>
+<header class='sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100' data-testid='header'>
   <div class='container-custom'>
     <div class='flex justify-between items-center h-20'>
       <div class='flex items-center'>
-        <a href='/' class='flex-shrink-0 group'>
+        <a href='/' class='flex-shrink-0 group' data-testid='header-logo'>
           <div class='flex items-center space-x-3'>
             <div class='w-10 h-10 bg-gradient-to-br from-primary-500 to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform'>
               <svg class='w-6 h-6 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -23,9 +23,10 @@ const currentPath = Astro.url.pathname;
             <span class='text-xl font-bold text-gray-900 hidden sm:block'>Astro Boilerplate</span>
           </div>
         </a>
-        <nav class='ml-8 sm:ml-12 flex space-x-1' role='navigation' aria-label='Main navigation'>
+        <nav class='ml-8 sm:ml-12 flex space-x-1' role='navigation' aria-label='Main navigation' data-testid='header-nav'>
           <a
             href='/'
+            data-testid='header-nav-home'
             class={`px-3 sm:px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
               currentPath === '/' 
                 ? 'bg-gray-900 text-white' 
@@ -35,6 +36,7 @@ const currentPath = Astro.url.pathname;
           >
           <a
             href='/contact'
+            data-testid='header-nav-contact'
             class={`px-3 sm:px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
               currentPath === '/contact' 
                 ? 'bg-gray-900 text-white' 
@@ -49,6 +51,7 @@ const currentPath = Astro.url.pathname;
       <div class='hidden md:block'>
         <a
           href='/contact'
+          data-testid='header-cta'
           class='px-6 py-2.5 bg-gray-900 text-white rounded-xl font-semibold text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-colors'
         >
           Get Started
