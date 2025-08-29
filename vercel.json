@@ -1,22 +1,28 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
   "framework": "astro",
   "installCommand": "pnpm install",
+  
   "functions": {
     "src/pages/api/**/*.ts": {
       "runtime": "nodejs20.x",
-      "maxDuration": 30
+      "maxDuration": 30,
+      "memory": 1024
     }
   },
+  
   "build": {
     "env": {
       "NODE_ENV": "production"
     }
   },
+  
   "env": {
     "VERCEL": "1"
   },
+  
   "headers": [
     {
       "source": "/(.*)",
@@ -36,6 +42,14 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
         }
       ]
     },
@@ -49,7 +63,7 @@
       ]
     },
     {
-      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
+      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp|avif))",
       "headers": [
         {
           "key": "Cache-Control",
@@ -71,10 +85,15 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     }
   ],
+  
   "rewrites": [
     {
       "source": "/sitemap.xml",
@@ -89,11 +108,20 @@
       "destination": "/api/$1"
     }
   ],
+  
   "redirects": [
     {
       "source": "/home",
       "destination": "/",
       "permanent": true
     }
-  ]
+  ],
+  
+  "cleanUrls": true,
+  
+  "trailingSlash": false,
+  
+  "regions": ["iad1"],
+  
+  "crons": []
 }

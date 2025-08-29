@@ -20,6 +20,8 @@
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
+    "test:email": "playwright test tests/e2e/contact.spec.ts -g 'should send real email through Resend API'",
+    "test:no-email": "playwright test tests/e2e/contact.spec.ts --grep-invert 'should send real email through Resend API'",
     "install:playwright": "playwright install",
     "clean": "rm -rf dist .astro"
   },
@@ -27,7 +29,8 @@
     "astro": "^5.12.0",
     "pino": "^9.7.0",
     "pino-pretty": "^13.1.1",
-    "resend": "^4.8.0"
+    "resend": "^4.8.0",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
