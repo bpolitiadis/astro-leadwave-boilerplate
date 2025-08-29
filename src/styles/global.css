@@ -19,20 +19,62 @@
 }
 
 @layer components {
+  /* Button Components */
   .btn {
     @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700;
+    @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
   }
 
   .btn-secondary {
-    @apply bg-gray-100 text-gray-900 hover:bg-gray-200;
+    @apply bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300;
   }
 
+  /* Form Components */
+  .form-input {
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700;
+  }
+
+  .form-error {
+    @apply mt-1 text-sm text-red-600;
+  }
+
+  /* Navigation Components */
+  .nav-link {
+    @apply text-gray-900 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors;
+  }
+
+  .nav-link-active {
+    @apply text-primary-600 bg-primary-50;
+  }
+
+  /* Container System */
   .container-custom {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Card Components */
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+  }
+
+  .card-header {
+    @apply text-lg font-semibold text-gray-900 mb-4;
+  }
+
+  /* Success/Error States */
+  .message-success {
+    @apply bg-green-50 text-green-800 border border-green-200 rounded-md p-4;
+  }
+
+  .message-error {
+    @apply bg-red-50 text-red-800 border border-red-200 rounded-md p-4;
   }
 }
 

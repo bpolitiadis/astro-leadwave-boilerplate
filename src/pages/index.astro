@@ -1,243 +1,144 @@
 ---
-import Layout from '@/layouts/Layout.astro';
-import Header from '@/components/Header.astro';
-import Footer from '@/components/Footer.astro';
+import Layout from '../layouts/Layout.astro';
+import { logComponentLifecycle } from '../lib/logger';
+
+// Log page component lifecycle
+logComponentLifecycle('HomePage', 'render', {
+  pathname: Astro.url.pathname,
+});
 ---
 
-<Layout
-  title='Astro Tailwind Boilerplate - Production-Ready Web Development'
-  description='A modern, production-ready boilerplate for web applications built with Astro, Tailwind CSS, TypeScript, and comprehensive tooling for optimal performance and developer experience.'
-  image='/og-image.jpg'
-  type='website'
->
-  <Header />
-
-  <main class='flex-1'>
-    <!-- Hero Section -->
-    <section
-      class='relative overflow-hidden bg-gradient-to-br from-primary-50 to-white py-20 sm:py-32'
-    >
-      <div class='container-custom'>
-        <div class='mx-auto max-w-4xl text-center'>
-          <h1 class='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
-            Modern Web Development
-            <span class='block text-primary-600'>Made Simple</span>
-          </h1>
-          <p class='mt-6 text-lg leading-8 text-gray-600 text-balance'>
-            A production-ready boilerplate featuring Astro, Tailwind CSS, TypeScript, and
-            comprehensive tooling for building fast, accessible, and SEO-optimized web applications.
-          </p>
-          <div class='mt-10 flex items-center justify-center gap-x-6'>
-            <a href='/about' class='btn btn-primary'> Get Started </a>
-            <a href='https://github.com' class='btn btn-secondary'> View on GitHub </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Background decoration -->
-      <div
-        class='absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80'
-      >
-        <div
-          class='relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-primary-400 to-primary-600 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]'
+<Layout title='Astro Tailwind Boilerplate'>
+  <div class='bg-white'>
+    <div class='container-custom py-16 sm:py-24'>
+      <div class='text-center'>
+        <h1 class='text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl'>
+          <span class='block'>Astro Tailwind</span>
+          <span class='block text-primary-600'>Boilerplate</span>
+        </h1>
+        <p
+          class='mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl'
         >
-        </div>
-      </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class='py-20 sm:py-32'>
-      <div class='container-custom'>
-        <div class='mx-auto max-w-2xl text-center'>
-          <h2 class='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
-            Everything you need to build modern web applications
-          </h2>
-          <p class='mt-6 text-lg leading-8 text-gray-600'>
-            Built with the latest technologies and best practices for optimal performance, developer
-            experience, and user accessibility.
-          </p>
-        </div>
-
-        <div class='mx-auto mt-16 max-w-7xl'>
-          <div class='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3'>
-            <!-- Feature 1 -->
-            <div
-              class='relative p-8 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow'
+          Production-ready Astro + Tailwind CSS boilerplate with TypeScript, ESLint, Prettier,
+          Playwright, and SEO optimization.
+        </p>
+        <div class='mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8'>
+          <div class='rounded-md shadow'>
+            <a
+              href='/contact'
+              class='btn btn-primary w-full flex items-center justify-center px-8 py-3 md:py-4 md:text-lg md:px-10'
             >
-              <div class='flex h-12 w-12 items-center justify-center rounded-lg bg-primary-600'>
-                <svg
-                  class='h-6 w-6 text-white'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                    stroke-width='2'
-                    d='M13 10V3L4 14h7v7l9-11h-7z'></path>
-                </svg>
-              </div>
-              <h3 class='mt-6 text-lg font-semibold text-gray-900'>Lightning Fast</h3>
-              <p class='mt-4 text-gray-600'>
-                Built with Astro for optimal performance. Only ship the JavaScript you need, when
-                you need it.
-              </p>
-            </div>
-
-            <!-- Feature 2 -->
-            <div
-              class='relative p-8 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow'
-            >
-              <div class='flex h-12 w-12 items-center justify-center rounded-lg bg-primary-600'>
-                <svg
-                  class='h-6 w-6 text-white'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                    stroke-width='2'
-                    d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path>
-                </svg>
-              </div>
-              <h3 class='mt-6 text-lg font-semibold text-gray-900'>Type Safe</h3>
-              <p class='mt-4 text-gray-600'>
-                Full TypeScript support with strict configuration for better developer experience
-                and fewer bugs.
-              </p>
-            </div>
-
-            <!-- Feature 3 -->
-            <div
-              class='relative p-8 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow'
-            >
-              <div class='flex h-12 w-12 items-center justify-center rounded-lg bg-primary-600'>
-                <svg
-                  class='h-6 w-6 text-white'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                    stroke-width='2'
-                    d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
-                  ></path>
-                </svg>
-              </div>
-              <h3 class='mt-6 text-lg font-semibold text-gray-900'>Beautiful by Default</h3>
-              <p class='mt-4 text-gray-600'>
-                Tailwind CSS for rapid UI development with a custom design system and responsive
-                components.
-              </p>
-            </div>
-
-            <!-- Feature 4 -->
-            <div
-              class='relative p-8 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow'
-            >
-              <div class='flex h-12 w-12 items-center justify-center rounded-lg bg-primary-600'>
-                <svg
-                  class='h-6 w-6 text-white'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                    stroke-width='2'
-                    d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
-                  ></path>
-                </svg>
-              </div>
-              <h3 class='mt-6 text-lg font-semibold text-gray-900'>SEO Optimized</h3>
-              <p class='mt-4 text-gray-600'>
-                Built-in SEO features with meta tags, Open Graph, Twitter cards, sitemap, and
-                robots.txt.
-              </p>
-            </div>
-
-            <!-- Feature 5 -->
-            <div
-              class='relative p-8 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow'
-            >
-              <div class='flex h-12 w-12 items-center justify-center rounded-lg bg-primary-600'>
-                <svg
-                  class='h-6 w-6 text-white'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                    stroke-width='2'
-                    d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
-                  ></path>
-                </svg>
-              </div>
-              <h3 class='mt-6 text-lg font-semibold text-gray-900'>Production Ready</h3>
-              <p class='mt-4 text-gray-600'>
-                Docker configuration, Vercel deployment, comprehensive testing, and CI/CD ready.
-              </p>
-            </div>
-
-            <!-- Feature 6 -->
-            <div
-              class='relative p-8 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow'
-            >
-              <div class='flex h-12 w-12 items-center justify-center rounded-lg bg-primary-600'>
-                <svg
-                  class='h-6 w-6 text-white'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                    stroke-width='2'
-                    d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'
-                  ></path>
-                </svg>
-              </div>
-              <h3 class='mt-6 text-lg font-semibold text-gray-900'>Accessible</h3>
-              <p class='mt-4 text-gray-600'>
-                Built with accessibility in mind, following WCAG guidelines and best practices.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class='bg-primary-600'>
-      <div class='container-custom py-16 sm:py-24'>
-        <div class='mx-auto max-w-2xl text-center'>
-          <h2 class='text-3xl font-bold tracking-tight text-white sm:text-4xl'>
-            Ready to get started?
-          </h2>
-          <p class='mt-6 text-lg leading-8 text-primary-100'>
-            Clone this boilerplate and start building your next web application with confidence.
-          </p>
-          <div class='mt-10 flex items-center justify-center gap-x-6'>
-            <a href='/contact' class='btn bg-white text-primary-600 hover:bg-gray-100'>
-              Contact Us
+              Get Started
             </a>
-            <a href='/about' class='text-sm font-semibold leading-6 text-white'>
-              Learn more <span aria-hidden='true'>→</span>
+          </div>
+          <div class='mt-3 rounded-md shadow sm:mt-0 sm:ml-3'>
+            <a
+              href='https://github.com'
+              class='btn btn-secondary w-full flex items-center justify-center px-8 py-3 md:py-4 md:text-lg md:px-10'
+            >
+              View on GitHub
             </a>
           </div>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </div>
 
-  <Footer />
+  <div class='bg-gray-50'>
+    <div class='container-custom py-12 lg:py-16'>
+      <div class='max-w-3xl mx-auto text-center'>
+        <h2 class='text-3xl font-extrabold text-gray-900'>Features</h2>
+        <p class='mt-4 text-lg text-gray-500'>
+          Everything you need to build modern web applications.
+        </p>
+      </div>
+      <div class='mt-10'>
+        <div class='grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3'>
+          <div class='text-center'>
+            <div
+              class='flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white mx-auto'
+            >
+              <svg class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M13 10V3L4 14h7v7l9-11h-7z'></path>
+              </svg>
+            </div>
+            <h3 class='mt-6 text-lg font-medium text-gray-900'>Fast Performance</h3>
+            <p class='mt-2 text-base text-gray-500'>
+              Built with Astro for optimal performance and SEO.
+            </p>
+          </div>
+
+          <div class='text-center'>
+            <div
+              class='flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white mx-auto'
+            >
+              <svg class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+                ></path>
+              </svg>
+            </div>
+            <h3 class='mt-6 text-lg font-medium text-gray-900'>Modern Design</h3>
+            <p class='mt-2 text-base text-gray-500'>
+              Styled with Tailwind CSS for beautiful, responsive design.
+            </p>
+          </div>
+
+          <div class='text-center'>
+            <div
+              class='flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white mx-auto'
+            >
+              <svg class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path>
+              </svg>
+            </div>
+            <h3 class='mt-6 text-lg font-medium text-gray-900'>Type Safe</h3>
+            <p class='mt-2 text-base text-gray-500'>
+              Full TypeScript support for better development experience.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </Layout>
+
+<script>
+  // Client-side logging for home page interactions
+  import { logComponentLifecycle } from '../lib/logger';
+
+  // Log when home page becomes interactive
+  logComponentLifecycle('HomePage', 'interactive', {
+    pathname: window.location.pathname,
+  });
+
+  // Track button clicks
+  document.querySelectorAll('a[href="/contact"]').forEach(link => {
+    link.addEventListener('click', () => {
+      logComponentLifecycle('HomePage', 'cta_click', {
+        action: 'contact_form',
+        location: 'hero_section',
+      });
+    });
+  });
+
+  document.querySelectorAll('a[href*="github"]').forEach(link => {
+    link.addEventListener('click', () => {
+      logComponentLifecycle('HomePage', 'external_link_click', {
+        destination: 'github',
+        location: 'hero_section',
+      });
+    });
+  });
+</script>
