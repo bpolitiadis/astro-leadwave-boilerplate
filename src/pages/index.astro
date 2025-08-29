@@ -15,149 +15,45 @@ logComponentLifecycle('HomePage', 'render', {
 
 <Layout title='Astro Tailwind Boilerplate'>
   <!-- Hero Section -->
-  <section class='relative min-h-screen flex items-center bg-gradient-to-br from-slate-50 via-white to-blue-50' data-testid='home-hero'>
-    <div class='absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(59,130,246,0.05),transparent_50%)]'></div>
-    <div class='container-custom section-padding relative z-10'>
-      <div class='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center'>
-        <!-- Hero Content -->
-        <div class='text-center lg:text-left content-spacing max-w-2xl mx-auto lg:mx-0'>
-          <div class='space-y-6 lg:space-y-8'>
-            <h1 class='text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-gray-900 leading-tight' data-testid='home-hero-title'>
-              <span class='block'>Astro Tailwind</span>
-              <span class='block bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent'>Boilerplate</span>
-            </h1>
-            <p class='text-lg sm:text-xl lg:text-2xl text-gray-600 font-light leading-relaxed' data-testid='home-hero-description'>
-              Production-ready Astro + Tailwind CSS boilerplate with TypeScript, ESLint, Prettier,
-              Playwright, and SEO optimization.
-            </p>
-          </div>
-          
-          <div class='flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-start pt-4' data-testid='home-hero-cta'>
-            <a
-              href='/contact'
-              data-testid='home-cta-get-started'
-              class='group px-8 py-4 bg-gray-900 text-white rounded-2xl font-semibold text-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-colors'
-            >
-              Get Started
-              <svg class='inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 8l4 4m0 0l-4 4m4-4H3'></path>
-              </svg>
-            </a>
-            <a
-              href='https://github.com'
-              data-testid='home-cta-github'
-              class='px-8 py-4 border-2 border-gray-200 text-gray-900 rounded-2xl font-semibold text-lg hover:border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-colors'
-            >
-              View on GitHub
-            </a>
-          </div>
-        </div>
-        
-        <!-- Hero Image -->
-        <div class='relative mt-12 lg:mt-0' data-testid='home-hero-image'>
-          <div class='relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-50 to-indigo-100 p-6 lg:p-8'>
-            <Image
-              src={boilerplateImage1}
-              alt='Modern web development tools and technologies illustration'
-              width={600}
-              height={400}
-              class='w-full h-auto rounded-2xl'
-              loading='eager'
-              decoding='async'
-              fetchpriority='high'
-            />
-          </div>
-          <!-- Decorative Elements -->
-          <div class='absolute -top-4 -right-4 w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-primary-400 to-blue-500 rounded-full opacity-20 blur-xl'></div>
-          <div class='absolute -bottom-6 -left-6 lg:-bottom-8 lg:-left-8 w-28 h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full opacity-15 blur-2xl'></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Section -->
-  <section class='section-padding bg-white' data-testid='home-features'>
-    <div class='container-custom'>
-      <div class='text-center mb-16 lg:mb-20'>
-        <div class='max-w-4xl mx-auto content-spacing'>
-          <h2 class='text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight' data-testid='home-features-title'>
-            Everything you need to build 
-            <span class='bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent'>modern web applications</span>
-          </h2>
-          <p class='text-lg sm:text-xl text-gray-600 leading-relaxed' data-testid='home-features-description'>
-            A carefully crafted foundation with the latest tools and best practices for building exceptional web experiences.
+  <section class='min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-slate-50 to-blue-50/30' data-testid='home-hero'>
+    <div class='absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(59,130,246,0.08),transparent_50%)]'></div>
+    <div class='absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(147,51,234,0.05),transparent_50%)]'></div>
+    
+    <div class='container-custom relative z-10 text-center'>
+      <!-- Hero Content -->
+      <div class='max-w-4xl mx-auto space-y-8' data-testid='home-hero-content'>
+        <div class='space-y-6'>
+          <h1 class='text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-gray-900 leading-tight' data-testid='home-hero-title'>
+            <span class='block'>Astro Tailwind</span>
+            <span class='block bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent'>Boilerplate</span>
+          </h1>
+          <p class='text-lg sm:text-xl lg:text-2xl text-gray-600 font-light leading-relaxed max-w-2xl mx-auto' data-testid='home-hero-description'>
+            Production-ready Astro + Tailwind CSS boilerplate with <span class='font-semibold'>TypeScript</span>, <span class='font-semibold'>ESLint</span>, <span class='font-semibold'>Prettier</span>, <span class='font-semibold'>Playwright</span>, and <span class='font-semibold'>SEO optimization</span>.
           </p>
         </div>
-      </div>
-      
-      <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 xl:gap-12' data-testid='home-features-grid'>
-        <!-- Feature Card 1 -->
-        <div class='group relative' data-testid='home-feature-card-performance'>
-          <div class='relative bg-white border border-gray-100 rounded-3xl p-6 lg:p-8 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full'>
-            <div class='relative mb-6 lg:mb-8 rounded-2xl overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 p-4 lg:p-6'>
-              <Image
-                src={boilerplateImage2}
-                alt='Lightning bolt representing fast performance'
-                width={200}
-                height={150}
-                class='w-full h-auto rounded-xl'
-                loading='lazy'
-                decoding='async'
-              />
-            </div>
-            <div class='space-y-4'>
-              <h3 class='text-xl lg:text-2xl font-bold text-gray-900'>Fast Performance</h3>
-              <p class='text-gray-600 leading-relaxed'>
-                Built with Astro for optimal performance and SEO. Lightning-fast load times and exceptional Core Web Vitals scores.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Feature Card 2 -->
-        <div class='group relative' data-testid='home-feature-card-design'>
-          <div class='relative bg-white border border-gray-100 rounded-3xl p-6 lg:p-8 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full'>
-            <div class='relative mb-6 lg:mb-8 rounded-2xl overflow-hidden bg-gradient-to-br from-purple-50 to-pink-100 p-4 lg:p-6'>
-              <Image
-                src={boilerplateImage3}
-                alt='Modern design elements and UI components'
-                width={200}
-                height={150}
-                class='w-full h-auto rounded-xl'
-                loading='lazy'
-                decoding='async'
-              />
-            </div>
-            <div class='space-y-4'>
-              <h3 class='text-xl lg:text-2xl font-bold text-gray-900'>Modern Design</h3>
-              <p class='text-gray-600 leading-relaxed'>
-                Styled with Tailwind CSS for beautiful, responsive design. Clean, elegant interfaces that work perfectly across all devices.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Feature Card 3 -->
-        <div class='group relative md:col-span-2 lg:col-span-1' data-testid='home-feature-card-typescript'>
-          <div class='relative bg-white border border-gray-100 rounded-3xl p-6 lg:p-8 hover:shadow-xl hover:border-gray-200 transition-all duration-300 h-full'>
-            <div class='relative mb-6 lg:mb-8 rounded-2xl overflow-hidden bg-gradient-to-br from-green-50 to-emerald-100 p-4 lg:p-6'>
-              <Image
-                src={boilerplateImage4}
-                alt='TypeScript code with type safety indicators'
-                width={200}
-                height={150}
-                class='w-full h-auto rounded-xl'
-                loading='lazy'
-                decoding='async'
-              />
-            </div>
-            <div class='space-y-4'>
-              <h3 class='text-xl lg:text-2xl font-bold text-gray-900'>Type Safe</h3>
-              <p class='text-gray-600 leading-relaxed'>
-                Full TypeScript support for better development experience. Catch errors early and build with confidence.
-              </p>
-            </div>
-          </div>
+        
+        <!-- CTA Buttons -->
+        <div class='flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center pt-4' data-testid='home-hero-cta'>
+          <a
+            href='/contact'
+            data-testid='home-cta-get-started'
+            class='group px-8 py-4 bg-gray-900 text-white rounded-2xl font-semibold text-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-all duration-200 hover:shadow-lg'
+          >
+            Get Started
+            <svg class='inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 8l4 4m0 0l-4 4m4-4H3'></path>
+            </svg>
+          </a>
+          <a
+            href='https://github.com'
+            data-testid='home-cta-github'
+            class='group px-8 py-4 bg-white text-gray-800 border-2 border-gray-200 rounded-2xl font-semibold text-lg hover:border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-all duration-200 hover:shadow-lg'
+          >
+            <svg class='inline-block mr-2 w-5 h-5' fill='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
+              <path fill-rule='evenodd' d='M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z' clip-rule='evenodd'></path>
+            </svg>
+            View on GitHub
+          </a>
         </div>
       </div>
     </div>

@@ -5,64 +5,44 @@ import { logComponentLifecycle } from '../lib/logger';
 logComponentLifecycle('Header', 'render', {
   pathname: Astro.url.pathname,
 });
-
-const currentPath = Astro.url.pathname;
 ---
 
-<header class='sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100' data-testid='header'>
-  <div class='container-custom'>
-    <div class='flex justify-between items-center h-20'>
-      <div class='flex items-center'>
-        <a href='/' class='flex-shrink-0 group' data-testid='header-logo'>
-          <div class='flex items-center space-x-3'>
-            <div class='w-10 h-10 bg-gradient-to-br from-primary-500 to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform'>
-              <svg class='w-6 h-6 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 10V3L4 14h7v7l9-11h-7z' />
-              </svg>
-            </div>
-            <span class='text-xl font-bold text-gray-900 hidden sm:block'>Astro Boilerplate</span>
-          </div>
-        </a>
-        <nav class='ml-8 sm:ml-12 flex space-x-1' role='navigation' aria-label='Main navigation' data-testid='header-nav'>
-          <a
-            href='/'
-            data-testid='header-nav-home'
-            class={`px-3 sm:px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
-              currentPath === '/' 
-                ? 'bg-gray-900 text-white' 
-                : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-            }`}
-            >Home</a
-          >
-          <a
-            href='/contact'
-            data-testid='header-nav-contact'
-            class={`px-3 sm:px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
-              currentPath === '/contact' 
-                ? 'bg-gray-900 text-white' 
-                : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-            }`}
-            >Contact</a
-          >
-        </nav>
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100/50 shadow-sm" data-testid="header">
+  <div class="container-custom">
+    <nav class="flex items-center justify-between h-16 lg:h-20">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary-500 to-blue-600 rounded-xl shadow-sm">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <span class="text-xl lg:text-2xl font-bold text-gray-900 tracking-tight">Astro Boilerplate</span>
       </div>
-      
-      <!-- CTA Button -->
-      <div class='hidden md:block'>
+
+      <!-- Navigation Links -->
+      <div class="flex items-center space-x-1">
         <a
-          href='/contact'
-          data-testid='header-cta'
-          class='px-6 py-2.5 bg-gray-900 text-white rounded-xl font-semibold text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-colors'
+          href="/"
+          class="nav-link-modern nav-link-active"
+          data-testid="nav-home"
         >
-          Get Started
+          Home
+        </a>
+        <a
+          href="/contact"
+          class="nav-link-modern"
+          data-testid="nav-contact"
+        >
+          Contact
         </a>
       </div>
-    </div>
+    </nav>
   </div>
 </header>
 
 <script>
-  // Client-side logging for user interactions
+  // Client-side logging for header interactions
   import { logComponentLifecycle } from '../lib/logger';
 
   // Log when header becomes interactive
@@ -71,12 +51,11 @@ const currentPath = Astro.url.pathname;
   });
 
   // Track navigation clicks
-  document.querySelectorAll('header a').forEach(link => {
-    link.addEventListener('click', e => {
-      const target = e.target as HTMLAnchorElement;
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
       logComponentLifecycle('Header', 'navigation_click', {
-        href: target.href,
-        text: target.textContent?.trim(),
+        href: link.getAttribute('href'),
+        text: link.textContent?.trim(),
       });
     });
   });

@@ -21,15 +21,15 @@
 @layer components {
   /* Button Components */
   .btn {
-    @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+    @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 hover:shadow-lg hover:shadow-primary-500/25;
   }
 
   .btn-secondary {
-    @apply bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300;
+    @apply bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300 hover:shadow-lg hover:shadow-gray-500/25;
   }
 
   /* Form Components */
@@ -47,16 +47,29 @@
 
   /* Navigation Components */
   .nav-link {
-    @apply text-gray-900 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors;
+    @apply text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-gray-50;
   }
 
   .nav-link-active {
-    @apply text-primary-600 bg-primary-50;
+    @apply text-primary-600 bg-primary-50 font-medium px-3 py-2 rounded-md text-sm;
+  }
+
+  /* Modern Navigation Links */
+  .nav-link-modern {
+    @apply relative px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-all duration-200 rounded-lg hover:bg-gray-50/80;
+  }
+
+  .nav-link-modern.nav-link-active {
+    @apply text-primary-600 bg-primary-50/80 font-semibold;
+  }
+
+  .nav-link-modern:hover {
+    @apply transform translate-y-[-1px];
   }
 
   /* Container System */
   .container-custom {
-    @apply mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 xl:px-16;
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12;
   }
   
   /* Section spacing utilities */
@@ -69,9 +82,18 @@
     @apply space-y-8 sm:space-y-10 lg:space-y-12;
   }
 
+  /* Layout utilities */
+  .page-padding {
+    @apply px-4 sm:px-6 lg:px-8 xl:px-12;
+  }
+  
+  .section-margin {
+    @apply mx-4 sm:mx-6 lg:mx-8 xl:mx-12;
+  }
+
   /* Card Components */
   .card {
-    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-all duration-300;
   }
 
   .card-header {
@@ -86,10 +108,31 @@
   .message-error {
     @apply bg-red-50 text-red-800 border border-red-200 rounded-md p-4;
   }
+
+  /* Enhanced button variants */
+  .btn-hero {
+    @apply px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-200 hover:shadow-lg;
+  }
+
+  .btn-hero-primary {
+    @apply bg-gray-900 text-white hover:bg-gray-800 hover:shadow-xl hover:shadow-gray-900/25;
+  }
+
+  .btn-hero-secondary {
+    @apply bg-white text-gray-800 border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-xl hover:shadow-gray-500/25;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .bg-gradient-subtle {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.03) 100%);
+  }
+
+  .shadow-soft {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 }
