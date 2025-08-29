@@ -76,6 +76,11 @@ src/
 - **Images**: Place in `src/images/` and import with `import Image from '../images/image.jpg'`
 - **Static files**: Place in `public/` and reference directly (e.g., `/favicon.svg`)
 
+### Test Email Functionality
+- **Run email test**: `pnpm test:email` (sends real email)
+- **Run without email**: `pnpm test:no-email` (skips email test)
+- **See [Email Testing Guide](./email-testing-guide.md)** for detailed instructions
+
 ## Where to Go Next
 
 - **[Architecture Guide](./architecture.md)** - Tech stack, routing, and component patterns

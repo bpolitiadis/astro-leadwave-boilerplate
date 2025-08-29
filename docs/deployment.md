@@ -1,373 +1,262 @@
 # Deployment Guide
 
-> **Template/Boilerplate Notice**
->
-> This document describes the deployment options and configuration for the boilerplate template. Use this to deploy your application to Vercel or Docker.
+This guide covers deploying your Astro Tailwind Boilerplate to production environments, with optimized configurations for Vercel and Docker.
 
-## Vercel Deployment
+## 🚀 Vercel Deployment (Recommended)
 
-### Overview
-This boilerplate is optimized for Vercel deployment with automatic builds, serverless functions, and performance optimization.
+### Configuration
 
-### Configuration File
-```json
-// vercel.json
-{
-  "buildCommand": "pnpm build",
-  "outputDirectory": "dist",
-  "framework": "astro",
-  "installCommand": "pnpm install",
-  "functions": {
-    "src/pages/api/**/*.ts": {
-      "runtime": "nodejs20.x",
-      "maxDuration": 30
-    }
-  },
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    }
-  },
-  "env": {
-    "VERCEL": "1"
-  }
-}
-```
+The boilerplate includes an optimized `vercel.json` with:
 
-### Key Configuration
+- **Build Optimization**: `pnpm build` with production environment
+- **Function Configuration**: Node.js 20.x runtime with 1GB memory
+- **Security Headers**: Comprehensive security headers including HSTS and CSP
+- **Caching Strategy**: Long-term caching for static assets, no-cache for API routes
+- **Performance Features**: Clean URLs, trailing slash handling, regional deployment
 
-#### Build Settings
-- **Build Command**: `pnpm build` - Custom build script
-- **Output Directory**: `dist` - Astro build output
-- **Framework**: `astro` - Framework detection
-- **Install Command**: `pnpm install` - Package manager
-
-#### Serverless Functions
-- **Runtime**: Node.js 20.x for API routes
-- **Max Duration**: 30 seconds for function execution
-- **Pattern**: All TypeScript files in `src/pages/api/`
-
-#### Environment Variables
-- **NODE_ENV**: Set to `production` during build
-- **VERCEL**: Set to `1` for Vercel-specific optimizations
-
-### Deployment Process
-
-#### 1. Connect Repository
-1. Push your code to GitHub/GitLab/Bitbucket
-2. Connect your repository to Vercel
-3. Vercel automatically detects Astro framework
-
-#### 2. Configure Environment Variables
-Set these in your Vercel dashboard:
-```bash
-# Email Configuration
-RESEND_API_KEY=your_resend_api_key_here
-FROM_EMAIL=noreply@yourdomain.com
-TO_EMAIL=hello@example.com
-
-# Site Configuration
-SITE_URL=https://yourdomain.com
-
-# Logging Configuration
-LOG_LEVEL=info
-LOG_ENVIRONMENT=production
-ENABLE_STRUCTURED_LOGGING=true
-```
-
-#### 3. Deploy
-- **Automatic**: Deploys on every push to main branch
-- **Manual**: Trigger deployments from Vercel dashboard
-- **Preview**: Automatic preview deployments for pull requests
-
-### Vercel Features
-
-#### Performance Optimization
-- **Edge Functions**: API routes run at the edge
-- **CDN**: Global content delivery network
-- **Image Optimization**: Automatic image optimization
-- **Caching**: Intelligent caching strategies
+### Key Features
 
 #### Security Headers
 ```json
-"headers": [
-  {
-    "source": "/(.*)",
-    "headers": [
-      {
-        "key": "X-Content-Type-Options",
-        "value": "nosniff"
-      },
-      {
-        "key": "X-Frame-Options",
-        "value": "DENY"
-      },
-      {
-        "key": "X-XSS-Protection",
-        "value": "1; mode=block"
-      },
-      {
-        "key": "Referrer-Policy",
-        "value": "strict-origin-when-cross-origin"
-      }
-    ]
-  }
-]
+{
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "X-XSS-Protection": "1; mode=block",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+}
 ```
 
-#### Caching Strategy
-```json
-"headers": [
-  {
-    "source": "/assets/(.*)",
-    "headers": [
-      {
-        "key": "Cache-Control",
-        "value": "public, max-age=31536000, immutable"
-      }
-    ]
-  },
-  {
-    "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
-    "headers": [
-      {
-        "key": "Cache-Control",
-        "value": "public, max-age=31536000, immutable"
-      }
-    ]
-  }
-]
-```
+#### Asset Caching
+- **Static Assets**: 1 year cache with immutable flag
+- **API Routes**: No-cache for dynamic content
+- **Modern Formats**: Support for WebP and AVIF images
 
-#### URL Rewrites
-```json
-"rewrites": [
-  {
-    "source": "/sitemap.xml",
-    "destination": "/api/sitemap"
-  },
-  {
-    "source": "/robots.txt",
-    "destination": "/api/robots"
-  }
-]
-```
+#### Performance Optimizations
+- **Clean URLs**: Remove file extensions
+- **Regional Deployment**: Deploy to `iad1` (US East)
+- **Function Memory**: 1GB allocation for API routes
 
-## Docker Deployment
+### Deployment Process
 
-### Overview
-Multi-stage Docker build optimized for production deployment with Nginx.
+1. **Connect Repository**
+   ```bash
+   # Install Vercel CLI
+   npm i -g vercel
+   
+   # Login and link project
+   vercel login
+   vercel link
+   ```
+
+2. **Set Environment Variables**
+   ```bash
+   vercel env add RESEND_API_KEY
+   vercel env add FROM_EMAIL
+   vercel env add TO_EMAIL
+   vercel env add SITE_URL
+   ```
+
+3. **Deploy**
+   ```bash
+   # Deploy to preview
+   vercel
+   
+   # Deploy to production
+   vercel --prod
+   ```
+
+### Environment Variables
+
+| Variable | Purpose | Required |
+|----------|---------|----------|
+| `RESEND_API_KEY` | Email service API key | Yes |
+| `FROM_EMAIL` | Sender email address | Yes |
+| `TO_EMAIL` | Recipient email address | Yes |
+| `SITE_URL` | Production site URL | Yes |
+| `LOG_LEVEL` | Logging verbosity | No (default: info) |
+| `LOG_ENVIRONMENT` | Logging environment | No (default: production) |
+
+## 🐳 Docker Deployment
 
 ### Dockerfile Stages
+
 ```dockerfile
-# Multi-stage build for production
+# Multi-stage build for optimized production image
 FROM node:20-alpine AS base
-
-# Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY package.json pnpm-lock.yaml* ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
-
-# Rebuild the source code only when needed
+# Install pnpm and dependencies
 FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-RUN npm install -g pnpm && pnpm build
-
-# Production image, copy all the files and run the app
+# Build the Astro application
 FROM nginx:alpine AS runner
-WORKDIR /usr/share/nginx/html
-COPY --from=builder /app/dist .
-COPY nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Serve with Nginx
 ```
 
-### Build Process
-1. **Dependencies Stage**: Install Node.js dependencies
-2. **Builder Stage**: Build the Astro application
-3. **Runner Stage**: Serve static files with Nginx
+### Build Commands
 
-### Nginx Configuration
-```nginx
-# nginx.conf
-events {
-    worker_connections 1024;
-}
-
-http {
-    include /etc/nginx/mime.types;
-    default_type application/octet-stream;
-    
-    # Gzip compression
-    gzip on;
-    gzip_vary on;
-    gzip_min_length 1024;
-    gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;
-    
-    server {
-        listen 80;
-        server_name localhost;
-        root /usr/share/nginx/html;
-        index index.html;
-        
-        # Security headers
-        add_header X-Frame-Options "DENY" always;
-        add_header X-Content-Type-Options "nosniff" always;
-        add_header X-XSS-Protection "1; mode=block" always;
-        
-        # Static file caching
-        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
-            expires 1y;
-            add_header Cache-Control "public, immutable";
-        }
-        
-        # HTML files
-        location ~* \.html$ {
-            expires -1;
-            add_header Cache-Control "no-cache, no-store, must-revalidate";
-        }
-        
-        # API routes (if needed)
-        location /api/ {
-            try_files $uri $uri/ /index.html;
-        }
-        
-        # Fallback for SPA routing
-        location / {
-            try_files $uri $uri/ /index.html;
-        }
-    }
-}
-```
-
-### Build & Run Commands
 ```bash
-# Build Docker image
-docker build -t astro-tailwind-boilerplate .
+# Build image
+docker build -t astro-boilerplate .
 
 # Run container
-docker run -p 4321:80 astro-tailwind-boilerplate
-
-# Run with custom environment
-docker run -p 4321:80 \
-  -e NODE_ENV=production \
-  -e SITE_URL=https://yourdomain.com \
-  astro-tailwind-boilerplate
+docker run -p 80:80 \
+  -e RESEND_API_KEY=your_key \
+  -e FROM_EMAIL=from@example.com \
+  -e TO_EMAIL=to@example.com \
+  astro-boilerplate
 ```
 
 ### Production Considerations
-- **Port**: Exposes port 80 (HTTP)
-- **Environment**: Production-optimized Nginx configuration
-- **Caching**: Static asset caching for performance
-- **Security**: Security headers and best practices
 
-## Environment Variables
+- **Port**: Exposes port 80 for HTTP
+- **Environment**: Set required environment variables
+- **Volumes**: Mount logs directory if needed
+- **Health Check**: Built-in Nginx health endpoint
 
-### Required Variables
-| Variable | Purpose | Example |
-|----------|---------|---------|
-| `RESEND_API_KEY` | Email service API key | `re_123456789` |
-| `FROM_EMAIL` | Sender email address | `noreply@yourdomain.com` |
-| `TO_EMAIL` | Recipient email address | `hello@example.com` |
+## ⚙️ Astro Configuration
 
-### Optional Variables
-| Variable | Purpose | Default |
-|----------|---------|---------|
-| `SITE_URL` | Site base URL | `https://yourdomain.com` |
-| `LOG_LEVEL` | Logging level | `info` |
-| `LOG_ENVIRONMENT` | Logging environment | `development` |
-| `ENABLE_STRUCTURED_LOGGING` | Enable structured logs | `true` |
+### Modern Features Enabled
 
-### Environment-Specific Configs
-```bash
-# Development
-LOG_LEVEL=debug
-LOG_ENVIRONMENT=development
-ENABLE_STRUCTURED_LOGGING=false
-
-# Production
-LOG_LEVEL=info
-LOG_ENVIRONMENT=production
-ENABLE_STRUCTURED_LOGGING=true
-
-# Vercel
-VERCEL=1
-LOG_ENVIRONMENT=vercel
+```javascript
+export default defineConfig({
+  // Image optimization with Sharp
+  image: {
+    service: { entrypoint: 'astro/assets/services/sharp' },
+    formats: ['webp', 'avif', 'jpeg'],
+    quality: 80
+  },
+  
+  // Performance optimizations
+  build: {
+    inlineStylesheets: 'auto',
+    assets: '_astro'
+  },
+  
+  // Modern Astro features
+  experimental: {
+    assets: true,
+    viewTransitions: true
+  }
+});
 ```
 
-## Deployment Checklist
+### Build Optimizations
 
-### Pre-Deployment
-- [ ] Environment variables configured
-- [ ] API keys and secrets set
-- [ ] Domain and SSL configured
-- [ ] Build passes locally (`pnpm build`)
-- [ ] Tests pass (`pnpm test`)
+- **CSS Inlining**: Critical CSS automatically inlined
+- **Asset Optimization**: WebP/AVIF image generation
+- **Chunk Splitting**: Optimized bundle splitting
+- **HMR**: Hot module replacement in development
 
-### Post-Deployment
-- [ ] Site loads correctly
-- [ ] Contact form works
-- [ ] Sitemap accessible (`/sitemap.xml`)
-- [ ] Robots.txt accessible (`/robots.txt`)
-- [ ] Performance metrics acceptable
-- [ ] Error monitoring configured
+## 🔒 Security Features
 
-### Monitoring
-- **Vercel Analytics**: Built-in performance monitoring
-- **Logs**: Structured logging for debugging
-- **Uptime**: Automatic uptime monitoring
-- **Performance**: Core Web Vitals tracking
+### Headers Configuration
 
-## Troubleshooting
+- **Content Security**: Prevent XSS and injection attacks
+- **Frame Protection**: Block clickjacking attempts
+- **Transport Security**: Enforce HTTPS with HSTS
+- **Permissions Control**: Restrict browser capabilities
+
+### API Security
+
+- **Input Validation**: Server-side validation in all API routes
+- **Rate Limiting**: Built-in protection against abuse
+- **CORS**: Configured for production domains
+- **Authentication**: Ready for JWT or session-based auth
+
+## 📊 Performance Monitoring
+
+### Vercel Analytics
+
+- **Real User Metrics**: Core Web Vitals tracking
+- **Function Monitoring**: API route performance
+- **Error Tracking**: Automatic error correlation
+- **Deployment Insights**: Build and deployment metrics
+
+### Custom Monitoring
+
+```typescript
+// Performance tracking in API routes
+import { logPerformance } from '../lib/logger';
+
+const startTime = Date.now();
+// ... operation
+logPerformance('api_operation', Date.now() - startTime);
+```
+
+## 🚨 Troubleshooting
 
 ### Common Issues
 
-#### Build Failures
+1. **Build Failures**
+   ```bash
+   # Clear cache and rebuild
+   pnpm clean
+   pnpm install
+   pnpm build
+   ```
+
+2. **Environment Variables**
+   - Verify all required variables are set in Vercel
+   - Check variable names match exactly
+   - Ensure no trailing spaces
+
+3. **Function Timeouts**
+   - Increase `maxDuration` in `vercel.json`
+   - Optimize API route performance
+   - Use streaming for large responses
+
+4. **Image Optimization**
+   - Ensure Sharp is properly installed
+   - Check image format support
+   - Verify quality settings
+
+### Debug Commands
+
 ```bash
-# Check build locally
-pnpm build
+# Check build output
+pnpm build --verbose
 
-# Verify dependencies
-pnpm install
+# Test production build locally
+pnpm preview
 
-# Check TypeScript
-pnpm type-check
+# Verify environment
+vercel env ls
+
+# Check function logs
+vercel logs
 ```
 
-#### Environment Variables
-```bash
-# Verify environment variables
-echo $RESEND_API_KEY
-echo $SITE_URL
+## 📋 Deployment Checklist
 
-# Check Vercel dashboard
-# Settings > Environment Variables
-```
+### Pre-Deployment
+- [ ] All tests pass (`pnpm test`)
+- [ ] Linting passes (`pnpm lint`)
+- [ ] Type checking passes (`pnpm type-check`)
+- [ ] Environment variables configured
+- [ ] Domain and SSL configured
 
-#### API Route Issues
-```bash
-# Check function logs in Vercel
-# Functions > View Function Logs
+### Post-Deployment
+- [ ] Verify all pages load correctly
+- [ ] Test contact form functionality
+- [ ] Check image optimization
+- [ ] Verify security headers
+- [ ] Monitor performance metrics
+- [ ] Test mobile responsiveness
 
-# Verify runtime configuration
-# vercel.json > functions
-```
+### Ongoing Maintenance
+- [ ] Monitor Vercel analytics
+- [ ] Review function logs regularly
+- [ ] Update dependencies monthly
+- [ ] Security audit quarterly
+- [ ] Performance review monthly
 
-#### Performance Issues
-```bash
-# Check bundle size
-pnpm build --analyze
+## 🔗 Additional Resources
 
-# Verify image optimization
-# Check dist/ directory for optimized assets
-```
-
-### Support Resources
 - **Vercel Documentation**: [vercel.com/docs](https://vercel.com/docs)
 - **Astro Deployment**: [docs.astro.build/en/guides/deploy/](https://docs.astro.build/en/guides/deploy/)
 - **Docker Documentation**: [docs.docker.com](https://docs.docker.com)
 - **Nginx Documentation**: [nginx.org/en/docs/](http://nginx.org/en/docs/)
+
+---
+
+*This deployment configuration provides production-ready performance, security, and monitoring capabilities optimized for modern web applications.*

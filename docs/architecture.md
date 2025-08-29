@@ -1,178 +1,294 @@
 # Architecture Guide
 
-> **Template/Boilerplate Notice**
->
-> This document describes the technical architecture of the boilerplate template. Use this to understand how the system works and how to extend it.
+This document outlines the technical architecture, patterns, and implementation details of the Astro Tailwind Boilerplate.
 
-## Tech Stack
+## 🏗️ Tech Stack
 
 ### Core Framework
-- **Astro**: v5.12.0 - Static site generator with SSR capabilities
+- **Astro**: v5.12.0 - Modern static site generator with hybrid rendering
 - **Tailwind CSS**: v3.4.17 - Utility-first CSS framework
-- **TypeScript**: v5.6.3 - Type-safe JavaScript
+- **TypeScript**: v5.6.3 - Type-safe JavaScript development
 
-### Key Integrations
-- **Pino**: v9.7.0 - High-performance logging
-- **Resend**: v4.8.0 - Email service integration
-- **Playwright**: v1.54.2 - End-to-end testing
-- **ESLint**: v9.32.0 - Code quality and linting
+### Runtime & Build Tools
+- **Node.js**: >=18.0.0 - JavaScript runtime
+- **Vite**: Built-in with Astro - Fast build tool and dev server
+- **Sharp**: v0.33.2 - High-performance image processing
+
+### Development Tools
+- **ESLint**: v9.32.0 - Code linting and quality
 - **Prettier**: v3.6.2 - Code formatting
+- **Playwright**: v1.54.2 - End-to-end testing
 
-## Runtime Model
+### Production Services
+- **Pino**: v9.7.0 - Structured logging
+- **Resend**: v4.8.0 - Email service
+- **Vercel**: Production deployment platform
 
-### Build Output
-- **Output Directory**: `dist/` (configurable in `astro.config.mjs`)
-- **Build Target**: Static site with API routes
-- **Hydration**: None by default (static rendering)
+## ⚡ Runtime Model
 
-### Rendering Strategy
-- **Static Generation**: All pages are pre-built at build time
-- **API Routes**: Dynamic server-side functionality via `/api/*` endpoints
-- **Client-side**: Minimal JavaScript for form handling and logging
+### Static Generation (Default)
+- **Build Time**: Pages are pre-rendered at build time
+- **Performance**: Fastest possible page loads
+- **SEO**: Optimal for search engine crawling
+- **Use Case**: Content-heavy sites, blogs, documentation
 
-## Routing & Pages
+### API Routes (Serverless)
+- **Runtime**: Node.js 20.x on Vercel
+- **Execution**: On-demand serverless functions
+- **Use Case**: Contact forms, dynamic data, user interactions
 
-### File-based Routing
+### Hybrid Approach
+- **Static Pages**: Pre-rendered for performance
+- **Dynamic Content**: API routes for interactivity
+- **Best of Both**: Performance + functionality
+
+## 🗂️ File-Based Routing
+
+### Page Structure
 ```
 src/pages/
-├── index.astro          # Homepage (/)
-├── contact.astro        # Contact page (/contact)
+├── index.astro          # / (homepage)
+├── contact.astro        # /contact
 ├── api/
-│   └── contact.ts       # Contact form API (/api/contact)
-├── sitemap.xml.ts       # Dynamic sitemap generation
-└── robots.txt.ts        # Dynamic robots.txt generation
+│   ├── contact.ts       # POST /api/contact
+│   ├── sitemap.ts       # GET /api/sitemap
+│   └── robots.ts        # GET /api/robots
+└── robots.txt.ts        # /robots.txt
 ```
 
-### API Routes
-- **Contact Form**: `POST /api/contact` - Handles form submissions with email sending
-- **Sitemap**: `GET /sitemap.xml` - Generates XML sitemap dynamically
-- **Robots**: `GET /robots.txt` - Generates robots.txt dynamically
+### Routing Conventions
+- **`.astro` files**: Generate HTML pages
+- **`.ts` files in `/api`**: Generate API endpoints
+- **`.ts` files in root**: Generate special files (robots.txt, sitemap.xml)
+- **Dynamic routes**: `[param].astro` for dynamic content
 
-### Route Features
-- **Type Safety**: Full TypeScript support with `APIRoute` types
-- **Error Handling**: Comprehensive error handling and logging
-- **Validation**: Form validation with detailed error messages
-- **Security**: Input sanitization and rate limiting considerations
+### URL Structure
+- **Clean URLs**: No file extensions in production
+- **SEO Friendly**: Semantic URL structure
+- **Redirects**: Automatic redirects for common patterns
 
-## Components & UI
+## 🧩 Component Architecture
 
-### Component Architecture
-- **Layout Components**: `src/layouts/Layout.astro` - Base page structure
-- **UI Components**: `src/components/*.astro` - Reusable UI elements
-- **Page Components**: `src/pages/*.astro` - Page-specific content
-
-### Component Patterns
+### Layout Components
 ```astro
+<!-- src/layouts/Layout.astro -->
 ---
-// Props interface for type safety
-export interface Props {
+interface Props {
   title: string;
-  description?: string;
+  description: string;
+  image?: string;
 }
 
-const { title, description = 'Default description' } = Astro.props;
+const { title, description, image = '/og-image.jpg' } = Astro.props;
 ---
 
-<!-- Component template -->
-<div class="component">
-  <h1>{title}</h1>
-  <p>{description}</p>
-  <slot />
-</div>
+<html lang="en">
+  <head>
+    <!-- SEO meta tags -->
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
 ```
 
-### Component Features
-- **Props Interface**: TypeScript interfaces for component props
-- **Default Values**: Sensible defaults for optional props
-- **Slot System**: Content projection via Astro slots
-- **Lifecycle Logging**: Automatic logging of component events
+### UI Components
+- **Reusable**: Self-contained with clear interfaces
+- **Composable**: Can be combined for complex layouts
+- **Accessible**: Built with WCAG guidelines in mind
+- **Responsive**: Mobile-first design approach
 
-## State & Configuration
+### Component Patterns
+- **Props Interface**: TypeScript interfaces for component props
+- **Slot System**: Flexible content injection
+- **Scoped Styles**: Component-specific CSS
+- **Client Scripts**: Interactive functionality when needed
+
+## ⚙️ State & Configuration
 
 ### Environment Variables
-```bash
+```env
 # Email Configuration
-RESEND_API_KEY=your_resend_api_key_here
+RESEND_API_KEY=re_123456789
 FROM_EMAIL=noreply@yourdomain.com
 TO_EMAIL=hello@example.com
 
-# Logging Configuration
-LOG_LEVEL=info
-LOG_ENVIRONMENT=development
-ENABLE_STRUCTURED_LOGGING=true
-
 # Site Configuration
 SITE_URL=https://yourdomain.com
+
+# Logging Configuration
+LOG_LEVEL=info
+LOG_ENVIRONMENT=production
+ENABLE_STRUCTURED_LOGGING=true
 ```
 
 ### Configuration Files
-- **Astro Config**: `astro.config.mjs` - Framework configuration
-- **Tailwind Config**: `tailwind.config.mjs` - CSS framework settings
-- **Vercel Config**: `vercel.json` - Deployment configuration
-- **Playwright Config**: `playwright.config.ts` - Testing configuration
+- **`astro.config.mjs`**: Astro framework configuration
+- **`tailwind.config.mjs`**: Tailwind CSS customization
+- **`vercel.json`**: Vercel deployment settings
+- **`tsconfig.json`**: TypeScript compilation options
 
-## Assets & Images
-
-### Asset Pipeline
-- **Images**: `src/images/` - Optimized image imports
-- **Static Files**: `public/` - Direct file serving
-- **Styles**: `src/styles/global.css` - Global CSS and Tailwind imports
-
-### Image Usage
-```astro
----
-// Import images for optimization
-import heroImage from '../images/hero.jpg';
----
-
-<img src={heroImage} alt="Hero image" />
+### Build Configuration
+```javascript
+// astro.config.mjs
+export default defineConfig({
+  site: 'https://your-domain.com',
+  integrations: [tailwind()],
+  build: {
+    inlineStylesheets: 'auto',
+    assets: '_astro'
+  },
+  image: {
+    service: { entrypoint: 'astro/assets/services/sharp' },
+    formats: ['webp', 'avif', 'jpeg'],
+    quality: 80
+  }
+});
 ```
 
-### Asset Features
-- **Automatic Optimization**: Astro optimizes imported images
-- **Type Safety**: TypeScript support for asset imports
-- **Performance**: Lazy loading and optimization built-in
+## 🖼️ Assets & Images
 
-## Build & Output
+### Image Pipeline
+- **Source**: Place images in `src/images/`
+- **Processing**: Automatic optimization with Sharp
+- **Formats**: WebP, AVIF, JPEG with fallbacks
+- **Responsive**: Automatic responsive image generation
+
+### Static Assets
+- **Location**: `public/` directory
+- **Direct Access**: Referenced by URL path
+- **Examples**: Favicon, robots.txt, sitemap.xml
+
+### Asset Optimization
+```astro
+---
+import Image from '../images/hero.jpg';
+---
+
+<Image 
+  src={Image} 
+  alt="Hero image" 
+  width={800} 
+  height={600}
+  format="webp"
+  quality={80}
+/>
+```
+
+## 🔨 Build & Output
 
 ### Build Process
-1. **Type Checking**: `astro check` validates TypeScript
-2. **Asset Processing**: Images and styles are optimized
-3. **Page Generation**: Static HTML is generated
-4. **API Routes**: Serverless functions are prepared
+1. **Type Checking**: `astro check` for TypeScript validation
+2. **Asset Processing**: Image optimization and format conversion
+3. **CSS Processing**: Tailwind compilation and purging
+4. **Bundle Generation**: JavaScript bundling and optimization
+5. **Static Generation**: HTML page generation
 
 ### Output Structure
 ```
 dist/
-├── _astro/              # Astro-generated assets
+├── _astro/              # Optimized assets
 ├── api/                 # API route handlers
-├── contact/             # Contact page
+├── contact/             # Generated pages
 ├── index.html           # Homepage
-├── sitemap.xml          # Generated sitemap
-└── robots.txt           # Generated robots.txt
+├── sitemap.xml          # SEO sitemap
+└── robots.txt           # Search engine instructions
 ```
 
-### Build Features
-- **Type Safety**: Full TypeScript compilation
-- **Asset Optimization**: Automatic image and CSS optimization
-- **SEO Generation**: Meta tags and structured data
-- **Performance**: Optimized bundle sizes
+### Performance Features
+- **CSS Inlining**: Critical CSS automatically inlined
+- **Asset Optimization**: Compressed images and minified code
+- **Bundle Splitting**: Optimized chunk loading
+- **Tree Shaking**: Unused code elimination
 
-## Security Considerations
+## 🔒 Security Considerations
 
 ### Form Handling
-- **Input Validation**: Server-side validation for all form inputs
-- **File Uploads**: Restricted file types and size limits
-- **CSRF Protection**: Form token validation (not implemented yet)
-- **Rate Limiting**: Request throttling (not implemented yet)
+- **Input Validation**: Server-side validation for all forms
+- **CSRF Protection**: Built-in protection against cross-site attacks
+- **File Upload Security**: Type and size validation
+- **Rate Limiting**: Protection against abuse
 
 ### API Security
-- **Input Sanitization**: All inputs are validated and sanitized
-- **Error Handling**: Generic error messages to prevent information leakage
-- **Logging**: Security events are logged for monitoring
-- **Headers**: Security headers configured in `vercel.json`
+- **Input Sanitization**: Automatic sanitization of user input
+- **Error Handling**: Secure error messages without information leakage
+- **Authentication Ready**: Structure for JWT or session-based auth
+- **CORS Configuration**: Proper cross-origin resource sharing
 
-### Data Protection
-- **Email Masking**: Sensitive data is masked in logs
-- **Privacy Compliance**: GDPR-ready consent handling
-- **Secure Headers**: Security headers for production deployment
+### Headers & Policies
+```json
+{
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "X-XSS-Protection": "1; mode=block",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+}
+```
+
+## 📊 Monitoring & Observability
+
+### Logging System
+- **Structured Logging**: JSON format for production
+- **Context Tracking**: Request correlation and user context
+- **Performance Monitoring**: Response time and resource usage
+- **Error Tracking**: Comprehensive error logging with stack traces
+
+### Performance Metrics
+- **Core Web Vitals**: LCP, FID, CLS tracking
+- **Build Metrics**: Bundle size and compilation time
+- **Runtime Metrics**: API response times and error rates
+- **User Experience**: Page load times and interaction metrics
+
+### Health Checks
+- **API Endpoints**: Health check endpoints for monitoring
+- **Build Status**: Automated build and test verification
+- **Deployment Health**: Post-deployment validation
+- **Performance Baselines**: Continuous performance monitoring
+
+## 🚀 Deployment Architecture
+
+### Vercel Integration
+- **Automatic Deployments**: Git-based deployment pipeline
+- **Edge Functions**: Global API route distribution
+- **CDN**: Global content delivery network
+- **Analytics**: Built-in performance and user analytics
+
+### Docker Support
+- **Multi-stage Builds**: Optimized production images
+- **Nginx Serving**: High-performance static file serving
+- **Environment Configuration**: Flexible environment variable management
+- **Production Ready**: Security and performance optimized
+
+## 🔄 Development Workflow
+
+### Local Development
+```bash
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Preview production build
+pnpm preview
+
+# Run tests
+pnpm test
+```
+
+### Quality Gates
+- **Linting**: ESLint with Astro-specific rules
+- **Formatting**: Prettier for consistent code style
+- **Type Checking**: TypeScript compilation validation
+- **Testing**: Playwright end-to-end test suite
+
+### Continuous Integration
+- **Automated Testing**: Run tests on every commit
+- **Build Verification**: Ensure production builds succeed
+- **Code Quality**: Automated linting and formatting
+- **Deployment**: Automatic deployment on successful builds
+
+---
+
+*This architecture provides a solid foundation for building scalable, performant, and maintainable web applications with modern web technologies.*
