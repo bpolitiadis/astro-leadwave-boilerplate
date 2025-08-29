@@ -19,6 +19,6 @@
     "module": "ESNext",
     "target": "ESNext"
   },
-  "include": ["src/**/*", "e2e/**/*"],
+  "include": ["src/**/*", "tests/e2e/**/*"],
   "exclude": ["node_modules", "dist", ".astro"]
 }
