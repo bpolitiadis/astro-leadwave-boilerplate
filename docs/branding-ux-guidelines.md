@@ -1,8 +1,8 @@
 # Branding & UX Guidelines
 
-> Template/Boilerplate Notice
+> **Template/Boilerplate Notice**
 >
-> These are default branding and UX guidelines provided by the boilerplate template. Treat every token, color, and pattern as a starting point—replace them with your brand’s system and update theme tokens in `tailwind.config.mjs`.
+> These are default branding and UX guidelines provided by the boilerplate template. Treat every token, color, and pattern as a starting point—replace them with your brand's system and update theme tokens in `tailwind.config.mjs`.
 
 This document outlines the design system, branding guidelines, and UX principles for the Astro Tailwind Boilerplate.
 
@@ -357,6 +357,35 @@ font-family:
 - [ ] Design system updates
 - [ ] Component documentation updates
 
+## 🔗 Related Documentation
+
+- **[Tailwind Guide](./tailwind.md)** - Detailed Tailwind CSS configuration and customization
+- **[Content Guide](./content-guide.md)** - How to add and manage content with proper styling
+- **[Quality Guide](./quality.md)** - Testing and maintaining design consistency
+- **[Architecture Guide](./architecture.md)** - Technical implementation details
+
+## 🎨 Customization Workflow
+
+### 1. Brand Analysis
+- Identify your brand colors and typography
+- Define your design principles
+- Establish your visual voice
+
+### 2. Token Mapping
+- Map brand colors to Tailwind color scale
+- Define custom spacing and typography values
+- Create component variants
+
+### 3. Implementation
+- Update `tailwind.config.mjs` with custom tokens
+- Modify `src/styles/global.css` for custom components
+- Update component examples with your brand
+
+### 4. Validation
+- Test across different devices and browsers
+- Verify accessibility compliance
+- Ensure performance standards are met
+
 ---
 
-_These guidelines ensure consistency, accessibility, and user experience across all implementations of this boilerplate._
+_These guidelines ensure consistency, accessibility, and user experience across all implementations of this boilerplate. For technical implementation details, see the [Tailwind Guide](./tailwind.md) and [Architecture Guide](./architecture.md)._

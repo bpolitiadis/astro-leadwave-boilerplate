@@ -1,61 +1,96 @@
-# Documentation
+# Astro Tailwind Boilerplate Documentation
 
-> Template/Boilerplate Notice
+> **Template/Boilerplate Notice**
 >
-> These docs describe a reusable boilerplate template. Use them to parameterize the project for your brand, product, and deployment needs.
+> This repository is a production-ready boilerplate template. It ships with working core functionality (Astro, Tailwind CSS, logging, testing, SEO, and deployment) so you can parameterize it (branding, copy, tokens, config) and start building immediately.
 
-Welcome to the Astro Tailwind Boilerplate documentation. This directory contains comprehensive guides and references for working with this boilerplate.
+## What This Boilerplate Is
 
-## 📚 Documentation Index
+A production-ready Astro + Tailwind CSS boilerplate that provides a solid foundation for building modern web applications. It includes comprehensive logging with Pino, end-to-end testing with Playwright, SEO optimization, and deployment configurations for both Vercel and Docker.
 
-### 🎨 Design & Branding
+## Key Features
 
-- **[Branding & UX Guidelines](./branding-ux-guidelines.md)** - Design system, color palette, typography, and UX principles
+- **⚡ Fast Performance**: Built with Astro for optimal performance and SEO
+- **🎨 Modern Design**: Styled with Tailwind CSS for beautiful, responsive design
+- **🔒 Type Safe**: Full TypeScript support for better development experience
+- **📊 Comprehensive Logging**: Structured logging with Pino for production monitoring
+- **🔍 SEO Optimized**: Built-in SEO features with meta tags, Open Graph, and sitemap
+- **🧪 Testing Ready**: Playwright for end-to-end testing
+- **🚀 Production Ready**: Docker configuration and Vercel deployment ready
+- **♿ Accessible**: Built with accessibility in mind
 
-### 🚀 Getting Started
+## Quick Start
 
-- **[Main README](../README.md)** - Project overview, setup, and quick start guide
+### Prerequisites
+- Node.js 18.0.0 or higher
+- pnpm 8.0.0 or higher
 
-### 🧩 Using This Template
+### Installation & Development
+```bash
+# Install dependencies
+pnpm install
 
-- Start with the "Use as a Template (Parameterization)" section in `../README.md`
-- Apply branding from `branding-ux-guidelines.md` and adjust tokens in `tailwind.config.mjs`
-- Replace example content/components under `src/`
+# Start development server
+pnpm dev
 
-### 📁 Project Structure
+# Build for production
+pnpm build
+
+# Preview production build
+pnpm preview
+```
+
+### One-Click Deploy
+This boilerplate is optimized for Vercel deployment:
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Set environment variables in Vercel dashboard
+4. Deploy automatically on every push
+
+## Project Structure
 
 ```
-docs/
-├── README.md                    # This file - documentation index
-├── branding-ux-guidelines.md    # Design system and UX guidelines
-└── [future-docs]               # Additional documentation as needed
+src/
+├── components/          # Reusable UI components
+├── layouts/            # Page layouts with SEO
+├── lib/                # Logger and utilities
+├── pages/              # Pages and API routes
+├── images/             # Image assets
+├── assets/             # Static assets
+└── styles/             # Global CSS and Tailwind
 ```
 
-## 🎯 Documentation Philosophy
+## Common Tasks
 
-This documentation follows these principles:
+### Add a Page
+1. Create a new `.astro` file in `src/pages/`
+2. Import and use the `Layout` component
+3. Add your content and styling
 
-- **Minimal but Complete**: Covers essentials without over-engineering
-- **Practical Focus**: Real-world usage examples and patterns
-- **Progressive Disclosure**: Start simple, add complexity as needed
-- **Maintainable**: Easy to update and extend
+### Add a Component
+1. Create a new `.astro` file in `src/components/`
+2. Export any props interface
+3. Import and use in your pages
 
-## 📝 Contributing to Documentation
+### Add Images/Assets
+- **Images**: Place in `src/images/` and import with `import Image from '../images/image.jpg'`
+- **Static files**: Place in `public/` and reference directly (e.g., `/favicon.svg`)
 
-When adding new documentation:
+## Where to Go Next
 
-1. **Keep it focused** - One concept per file
-2. **Use examples** - Show, don't just tell
-3. **Update this index** - Add new files to the table above
-4. **Follow the style** - Use consistent formatting and structure
+- **[Architecture Guide](./architecture.md)** - Tech stack, routing, and component patterns
+- **[SEO Guide](./seo.md)** - SEO strategy and content authoring
+- **[Tailwind Guide](./tailwind.md)** - Styling conventions and customization
+- **[Quality Guide](./quality.md)** - Testing, linting, and code quality
+- **[Deployment Guide](./deployment.md)** - Vercel and Docker deployment
+- **[Content Guide](./content-guide.md)** - Adding pages, components, and assets
+- **[Troubleshooting](./troubleshooting.md)** - Common issues and solutions
+- **[Branding & UX Guidelines](./branding-ux-guidelines.md)** - Design system and UX principles
+- **[Logging Guide](./logging.md)** - Comprehensive logging system and monitoring
 
-## 🔗 Quick Links
+## Getting Help
 
-- [Project README](../README.md) - Main project documentation
-- [Astro Documentation](https://docs.astro.build) - Official Astro docs
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - Official Tailwind docs
-- [TypeScript Documentation](https://www.typescriptlang.org/docs) - Official TypeScript docs
-
----
-
-_Documentation is a living document. Update it as the project evolves._
+- Check the [troubleshooting guide](./troubleshooting.md) for common issues
+- Review the [architecture guide](./architecture.md) for technical details
+- Run `pnpm test` to verify everything is working
+- Check the [boilerplate review](./boilerplate-review.md) for gaps and recommendations
