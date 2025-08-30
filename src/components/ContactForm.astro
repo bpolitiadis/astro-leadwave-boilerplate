@@ -1,5 +1,6 @@
 ---
 import { logComponentLifecycle } from '../lib/logger';
+import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './ui';
 
 // Log component lifecycle
 logComponentLifecycle('ContactForm', 'render', {
@@ -17,13 +18,14 @@ const {
 } = Astro.props;
 ---
 
-<div class='bg-white rounded-xl shadow-lg border border-gray-100 p-8 md:p-10'>
-  <div class='text-center mb-8'>
-    <h2 class='text-3xl font-bold text-gray-900 mb-3'>{title}</h2>
-    <p class='text-lg text-gray-600 max-w-2xl mx-auto'>{description}</p>
-  </div>
+<Card class="max-w-4xl mx-auto">
+  <CardHeader class="text-center">
+    <CardTitle class="text-3xl">{title}</CardTitle>
+    <CardDescription class="text-lg max-w-2xl mx-auto">{description}</CardDescription>
+  </CardHeader>
 
-  <form id='contact-form' class='space-y-6' enctype='multipart/form-data' novalidate data-testid='contact-form'>
+  <CardContent>
+    <form id='contact-form' class='space-y-6' enctype='multipart/form-data' novalidate data-testid='contact-form'>
     <!-- Personal Information -->
     <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
       <div class='space-y-2'>
@@ -31,14 +33,13 @@ const {
           <span class='text-red-500 mr-1'>*</span>
           Full Name
         </label>
-        <input
+        <Input
           type='text'
           name='name'
           id='name'
           data-testid='contact-form-name'
           required
           placeholder='Enter your full name'
-          class='form-input'
           aria-describedby='name-error'
           aria-invalid='false'
         />
@@ -50,14 +51,13 @@ const {
           <span class='text-red-500 mr-1'>*</span>
           Email Address
         </label>
-        <input
+        <Input
           type='email'
           name='email'
           id='email'
           data-testid='contact-form-email'
           required
           placeholder='your.email@example.com'
-          class='form-input'
           aria-describedby='email-error'
           aria-invalid='false'
         />
@@ -70,13 +70,12 @@ const {
         <label for='phone' class='form-label'>
           Phone Number
         </label>
-        <input
+        <Input
           type='tel'
           name='phone'
           id='phone'
           data-testid='contact-form-phone'
           placeholder='+1 (555) 123-4567'
-          class='form-input'
           aria-describedby='phone-error'
           aria-invalid='false'
         />
@@ -87,13 +86,12 @@ const {
         <label for='company' class='form-label'>
           Company
         </label>
-        <input
+        <Input
           type='text'
           name='company'
           id='company'
           data-testid='contact-form-company'
           placeholder='Your company name'
-          class='form-input'
         />
       </div>
     </div>
@@ -142,17 +140,16 @@ const {
         <span class='text-red-500 mr-1'>*</span>
         Message
       </label>
-      <textarea
+      <Textarea
         name='message'
         id='message'
         data-testid='contact-form-message'
-        rows='6'
+        rows={6}
         required
         placeholder='Please provide details about your inquiry...'
-        class='form-input resize-none'
         aria-describedby='message-error char-count'
         aria-invalid='false'
-      ></textarea>
+      />
       <div class='flex justify-between text-sm text-gray-500'>
         <span>Minimum 10 characters</span>
         <span id='char-count' data-testid='contact-form-char-count'>0 characters</span>
@@ -220,33 +217,37 @@ const {
     </div>
 
     <!-- Action Buttons -->
-    <div class='flex flex-col sm:flex-row gap-4 pt-6' data-testid='contact-form-actions'>
-      <button
+    <CardFooter class='flex flex-col sm:flex-row gap-4 pt-6' data-testid='contact-form-actions'>
+      <Button
         type='submit'
         id='submit-btn'
         data-testid='contact-form-submit'
-        class='btn btn-primary flex-1 text-base py-3 px-6 flex items-center justify-center'
+        variant='default'
+        size='lg'
+        class='flex-1 flex items-center justify-center'
       >
         <svg class='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
           <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 19l9 2-9-18-9 18 9-2zm0 0v-8' />
         </svg>
         Send Message
-      </button>
-      <button
+      </Button>
+      <Button
         type='reset'
         data-testid='contact-form-reset'
-        class='btn btn-secondary flex-1 text-base py-3 px-6 flex items-center justify-center'
+        variant='outline'
+        size='lg'
+        class='flex-1 flex items-center justify-center'
       >
         <svg class='w-5 h-5 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
           <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15' />
         </svg>
         Reset Form
-      </button>
-    </div>
+      </Button>
+    </CardFooter>
   </form>
+</CardContent>
 
   <div id='form-message' class='mt-6 hidden' role='alert' data-testid='contact-form-status'></div>
-</div>
 
 <script>
   import { logComponentLifecycle } from '../lib/logger';

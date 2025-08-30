@@ -1,11 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Image } from 'astro:assets';
 import { logComponentLifecycle } from '../lib/logger';
-import boilerplateImage1 from '../assets/images/boilerplate-image-1.png';
-import boilerplateImage2 from '../assets/images/boilerplate-image-2.png';
-import boilerplateImage3 from '../assets/images/boilerplate-image-3.png';
-import boilerplateImage4 from '../assets/images/boilerplate-image-4.png';
+import { Button, Card, CardHeader, CardTitle, CardDescription, CardContent, Badge } from '../components/ui';
 
 // Log page component lifecycle
 logComponentLifecycle('HomePage', 'render', {
@@ -34,27 +30,99 @@ logComponentLifecycle('HomePage', 'render', {
         
         <!-- CTA Buttons -->
         <div class='flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center pt-4' data-testid='home-hero-cta'>
-          <a
+          <Button
+            as="a"
             href='/contact'
             data-testid='home-cta-get-started'
-            class='group px-8 py-4 bg-gray-900 text-white rounded-2xl font-semibold text-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-all duration-200 hover:shadow-lg'
+            variant='default'
+            size='lg'
+            class='group px-8 py-4 text-lg font-semibold'
           >
             Get Started
             <svg class='inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
               <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 8l4 4m0 0l-4 4m4-4H3'></path>
             </svg>
-          </a>
-          <a
+          </Button>
+          <Button
+            as="a"
             href='https://github.com'
             data-testid='home-cta-github'
-            class='group px-8 py-4 bg-white text-gray-800 border-2 border-gray-200 rounded-2xl font-semibold text-lg hover:border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-all duration-200 hover:shadow-lg'
+            variant='outline'
+            size='lg'
+            class='group px-8 py-4 text-lg font-semibold'
           >
             <svg class='inline-block mr-2 w-5 h-5' fill='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
               <path fill-rule='evenodd' d='M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z' clip-rule='evenodd'></path>
             </svg>
             View on GitHub
-          </a>
+          </Button>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class='py-20 bg-gray-50/50' data-testid='home-features'>
+    <div class='container-custom'>
+      <div class='text-center mb-16'>
+        <h2 class='text-3xl sm:text-4xl font-bold text-gray-900 mb-4'>Built with Modern Components</h2>
+        <p class='text-lg text-gray-600 max-w-2xl mx-auto'>Experience the power of shadcn/ui components integrated with Astro and Tailwind CSS</p>
+      </div>
+      
+      <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        <Card class='text-center'>
+          <CardHeader>
+            <div class='mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4'>
+              <svg class='w-6 h-6 text-primary' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 10V3L4 14h7v7l9-11h-7z' />
+              </svg>
+            </div>
+            <CardTitle>Lightning Fast</CardTitle>
+            <CardDescription>Built with Astro for optimal performance and SEO</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class='flex flex-wrap gap-2 justify-center'>
+              <Badge variant='secondary'>Astro</Badge>
+              <Badge variant='outline'>TypeScript</Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card class='text-center'>
+          <CardHeader>
+            <div class='mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4'>
+              <svg class='w-6 h-6 text-primary' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z' />
+              </svg>
+            </div>
+            <CardTitle>Beautiful UI</CardTitle>
+            <CardDescription>shadcn/ui components with Tailwind CSS for stunning designs</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class='flex flex-wrap gap-2 justify-center'>
+              <Badge variant='secondary'>shadcn/ui</Badge>
+              <Badge variant='outline'>Tailwind CSS</Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card class='text-center'>
+          <CardHeader>
+            <div class='mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4'>
+              <svg class='w-6 h-6 text-primary' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
+              </svg>
+            </div>
+            <CardTitle>Production Ready</CardTitle>
+            <CardDescription>Includes testing, linting, and deployment configurations</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class='flex flex-wrap gap-2 justify-center'>
+              <Badge variant='secondary'>Playwright</Badge>
+              <Badge variant='outline'>ESLint</Badge>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   </section>

@@ -1,0 +1,45 @@
+---
+export interface Props {
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search'
+  placeholder?: string
+  value?: string
+  name?: string
+  id?: string
+  required?: boolean
+  disabled?: boolean
+  class?: string
+  'aria-label'?: string
+  'aria-describedby'?: string
+}
+
+const {
+  type = 'text',
+  placeholder = '',
+  value = '',
+  name = '',
+  id = '',
+  required = false,
+  disabled = false,
+  class: className = '',
+  'aria-label': ariaLabel = '',
+  'aria-describedby': ariaDescribedby = '',
+  ...rest
+} = Astro.props
+
+const baseClasses = 'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+const classes = `${baseClasses} ${className}`
+---
+
+<input
+  type={type}
+  placeholder={placeholder}
+  value={value}
+  name={name}
+  id={id}
+  required={required}
+  disabled={disabled}
+  class={classes}
+  aria-label={ariaLabel}
+  aria-describedby={ariaDescribedby}
+  {...rest}
+/>

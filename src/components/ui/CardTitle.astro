@@ -1,0 +1,13 @@
+---
+export interface Props {
+  class?: string
+}
+
+const { class: className = '' } = Astro.props
+const baseClasses = 'text-2xl font-semibold leading-none tracking-tight'
+const classes = `${baseClasses} ${className}`
+---
+
+<h3 class={classes}>
+  <slot />
+</h3>

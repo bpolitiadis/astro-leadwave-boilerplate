@@ -1,0 +1,220 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge } from '../components/ui';
+---
+
+<Layout title="UI Components - Astro Tailwind Boilerplate">
+  <div class="min-h-screen bg-gray-50/50 py-20">
+    <div class="container-custom">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">UI Components</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          A collection of beautiful, accessible, and customizable components built with shadcn/ui design principles, 
+          integrated with Astro and Tailwind CSS.
+        </p>
+      </div>
+
+      <!-- Buttons Section -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Buttons</h2>
+        <Card>
+          <CardHeader>
+            <CardTitle>Button Variants</CardTitle>
+            <CardDescription>Different button styles and sizes for various use cases</CardDescription>
+          </CardHeader>
+          <CardContent class="space-y-6">
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold">Variants</h3>
+              <div class="flex flex-wrap gap-4">
+                <Button variant="default">Default</Button>
+                <Button variant="secondary">Secondary</Button>
+                <Button variant="destructive">Destructive</Button>
+                <Button variant="outline">Outline</Button>
+                <Button variant="ghost">Ghost</Button>
+                <Button variant="link">Link</Button>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold">Sizes</h3>
+              <div class="flex flex-wrap items-center gap-4">
+                <Button size="sm">Small</Button>
+                <Button size="default">Default</Button>
+                <Button size="lg">Large</Button>
+                <Button size="icon">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                </Button>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold">States</h3>
+              <div class="flex flex-wrap gap-4">
+                <Button disabled>Disabled</Button>
+                <Button variant="outline" disabled>Disabled Outline</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      <!-- Form Elements Section -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Form Elements</h2>
+        <Card>
+          <CardHeader>
+            <CardTitle>Input Components</CardTitle>
+            <CardDescription>Form inputs with consistent styling and accessibility features</CardDescription>
+          </CardHeader>
+          <CardContent class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label for="text-input" class="text-sm font-medium text-gray-700">Text Input</label>
+                <Input id="text-input" placeholder="Enter some text..." />
+              </div>
+              
+              <div class="space-y-2">
+                <label for="email-input" class="text-sm font-medium text-gray-700">Email Input</label>
+                <Input id="email-input" type="email" placeholder="your@email.com" />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="textarea-input" class="text-sm font-medium text-gray-700">Textarea</label>
+              <Textarea 
+                id="textarea-input" 
+                placeholder="Enter a longer message..." 
+                rows={4}
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label for="disabled-input" class="text-sm font-medium text-gray-700">Disabled Input</label>
+              <Input id="disabled-input" placeholder="This input is disabled" disabled />
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      <!-- Cards Section -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Cards</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Simple Card</CardTitle>
+              <CardDescription>A basic card with header and content</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p class="text-gray-600">This is the main content area of the card.</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Card with Footer</CardTitle>
+              <CardDescription>Card that includes action buttons</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p class="text-gray-600">Content with additional actions below.</p>
+            </CardContent>
+            <CardFooter class="flex gap-2">
+              <Button size="sm">Action</Button>
+              <Button variant="outline" size="sm">Cancel</Button>
+            </CardFooter>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Interactive Card</CardTitle>
+              <CardDescription>Card with hover effects and badges</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div class="space-y-3">
+                <p class="text-gray-600">Features and capabilities</p>
+                <div class="flex flex-wrap gap-2">
+                  <Badge variant="default">New</Badge>
+                  <Badge variant="secondary">Feature</Badge>
+                  <Badge variant="outline">Beta</Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <!-- Badges Section -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Badges</h2>
+        <Card>
+          <CardHeader>
+            <CardTitle>Badge Variants</CardTitle>
+            <CardDescription>Different badge styles for status indicators and labels</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class="flex flex-wrap gap-4">
+              <Badge variant="default">Default</Badge>
+              <Badge variant="secondary">Secondary</Badge>
+              <Badge variant="destructive">Destructive</Badge>
+              <Badge variant="outline">Outline</Badge>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      <!-- Responsive Design Section -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Responsive Design</h2>
+        <Card>
+          <CardHeader>
+            <CardTitle>Mobile-First Approach</CardTitle>
+            <CardDescription>All components are built with responsive design in mind</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="text-center p-4 bg-blue-50 rounded-lg">
+                <div class="text-2xl font-bold text-blue-600">📱</div>
+                <div class="text-sm font-medium text-blue-800">Mobile</div>
+              </div>
+              <div class="text-center p-4 bg-green-50 rounded-lg">
+                <div class="text-2xl font-bold text-green-600">💻</div>
+                <div class="text-sm font-medium text-green-800">Tablet</div>
+              </div>
+              <div class="text-center p-4 bg-purple-50 rounded-lg">
+                <div class="text-2xl font-bold text-purple-600">🖥️</div>
+                <div class="text-sm font-medium text-purple-800">Desktop</div>
+              </div>
+              <div class="text-center p-4 bg-orange-50 rounded-lg">
+                <div class="text-2xl font-bold text-orange-600">🖥️</div>
+                <div class="text-sm font-medium text-orange-800">Large</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="text-center">
+        <Card class="max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle>Ready to Get Started?</CardTitle>
+            <CardDescription>Explore the components and start building your next project</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button as="a" href="/contact" variant="default" size="lg">
+                Contact Us
+              </Button>
+              <Button as="a" href="/" variant="outline" size="lg">
+                Back to Home
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+    </div>
+  </div>
+</Layout>

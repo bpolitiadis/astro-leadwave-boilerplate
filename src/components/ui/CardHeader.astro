@@ -1,0 +1,13 @@
+---
+export interface Props {
+  class?: string
+}
+
+const { class: className = '' } = Astro.props
+const baseClasses = 'flex flex-col space-y-1.5 p-6'
+const classes = `${baseClasses} ${className}`
+---
+
+<div class={classes}>
+  <slot />
+</div>

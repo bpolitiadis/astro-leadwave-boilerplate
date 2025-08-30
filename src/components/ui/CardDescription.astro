@@ -1,0 +1,13 @@
+---
+export interface Props {
+  class?: string
+}
+
+const { class: className = '' } = Astro.props
+const baseClasses = 'text-sm text-muted-foreground'
+const classes = `${baseClasses} ${className}`
+---
+
+<p class={classes}>
+  <slot />
+</p>
