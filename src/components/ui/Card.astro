@@ -4,7 +4,7 @@ export interface Props {
 }
 
 const { class: className = '' } = Astro.props
-const baseClasses = 'rounded-lg border bg-card text-card-foreground shadow-sm'
+const baseClasses = 'rounded-lg border border-gray-200 bg-white text-gray-900 shadow-sm'
 const classes = `${baseClasses} ${className}`
 ---
 

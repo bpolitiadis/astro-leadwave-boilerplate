@@ -5,7 +5,7 @@ import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, 
 
 <Layout title="UI Components - Astro Tailwind Boilerplate">
   <div class="min-h-screen bg-gray-50/50 section-padding">
-    <div class="container-custom px-32">
+    <div class="container-custom px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
       <!-- Header -->
       <div class="text-center mb-16">
         <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">UI Components</h1>
@@ -25,7 +25,7 @@ import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, 
           </CardHeader>
           <CardContent class="space-y-6">
             <div class="space-y-4">
-              <h3 class="text-lg font-semibold">Variants</h3>
+              <h3 class="text-lg font-semibold text-gray-800">Variants</h3>
               <div class="flex flex-wrap gap-4">
                 <Button variant="default">Default</Button>
                 <Button variant="secondary">Secondary</Button>
@@ -37,7 +37,7 @@ import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, 
             </div>
             
             <div class="space-y-4">
-              <h3 class="text-lg font-semibold">Sizes</h3>
+              <h3 class="text-lg font-semibold text-gray-800">Sizes</h3>
               <div class="flex flex-wrap items-center gap-4">
                 <Button size="sm">Small</Button>
                 <Button size="default">Default</Button>
@@ -51,7 +51,7 @@ import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, 
             </div>
 
             <div class="space-y-4">
-              <h3 class="text-lg font-semibold">States</h3>
+              <h3 class="text-lg font-semibold text-gray-800">States</h3>
               <div class="flex flex-wrap gap-4">
                 <Button disabled>Disabled</Button>
                 <Button variant="outline" disabled>Disabled Outline</Button>
@@ -103,7 +103,7 @@ import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, 
       <section class="mb-16">
         <h2 class="text-2xl font-bold text-gray-900 mb-8">Cards</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card>
+          <Card class="hover:shadow-lg transition-shadow duration-200">
             <CardHeader>
               <CardTitle>Simple Card</CardTitle>
               <CardDescription>A basic card with header and content</CardDescription>
@@ -113,7 +113,7 @@ import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, 
             </CardContent>
           </Card>
 
-          <Card>
+          <Card class="hover:shadow-lg transition-shadow duration-200">
             <CardHeader>
               <CardTitle>Card with Footer</CardTitle>
               <CardDescription>Card that includes action buttons</CardDescription>
@@ -127,7 +127,7 @@ import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, 
             </CardFooter>
           </Card>
 
-          <Card>
+          <Card class="hover:shadow-lg transition-shadow duration-200">
             <CardHeader>
               <CardTitle>Interactive Card</CardTitle>
               <CardDescription>Card with hover effects and badges</CardDescription>
@@ -175,19 +175,19 @@ import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, 
           </CardHeader>
           <CardContent>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div class="text-center p-4 bg-blue-50 rounded-lg">
+              <div class="text-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200">
                 <div class="text-2xl font-bold text-blue-600">📱</div>
                 <div class="text-sm font-medium text-blue-800">Mobile</div>
               </div>
-              <div class="text-center p-4 bg-green-50 rounded-lg">
+              <div class="text-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-200">
                 <div class="text-2xl font-bold text-green-600">💻</div>
                 <div class="text-sm font-medium text-green-800">Tablet</div>
               </div>
-              <div class="text-center p-4 bg-purple-50 rounded-lg">
+              <div class="text-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors duration-200">
                 <div class="text-2xl font-bold text-purple-600">🖥️</div>
                 <div class="text-sm font-medium text-purple-800">Desktop</div>
               </div>
-              <div class="text-center p-4 bg-orange-50 rounded-lg">
+              <div class="text-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors duration-200">
                 <div class="text-2xl font-bold text-orange-600">🖥️</div>
                 <div class="text-sm font-medium text-orange-800">Large</div>
               </div>
@@ -205,10 +205,10 @@ import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardDescription, 
           </CardHeader>
           <CardContent>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button as="a" href="/contact" variant="default" size="lg">
+              <Button variant="default" size="lg">
                 Contact Us
               </Button>
-              <Button as="a" href="/" variant="outline" size="lg">
+              <Button variant="outline" size="lg">
                 Back to Home
               </Button>
             </div>
