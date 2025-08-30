@@ -9,7 +9,7 @@ logComponentLifecycle('Header', 'render', {
 
 <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100/50 shadow-sm" data-testid="header">
   <div class="container-custom">
-    <nav class="flex items-center justify-between h-16 lg:h-20 px-0">
+    <nav class="flex items-center justify-between h-16 lg:h-20 px-32">
       <!-- Logo -->
       <div class="flex items-center space-x-3">
         <div class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary-500 to-blue-600 rounded-xl shadow-sm">
@@ -21,7 +21,7 @@ logComponentLifecycle('Header', 'render', {
       </div>
 
       <!-- Navigation Links -->
-      <div class="flex items-center space-x-1">
+      <div class="flex items-center space-x-16">
         <a
           href="/"
           class={`nav-link-modern ${Astro.url.pathname === '/' ? 'nav-link-active' : ''}`}
