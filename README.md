@@ -27,6 +27,7 @@ A production-ready Astro + Tailwind CSS boilerplate with TypeScript, ESLint, Pre
 - **Testing**: [Playwright](https://playwright.dev) ^1.54.2
 - **Linting**: [ESLint](https://eslint.org) ^9.32.0
 - **Formatting**: [Prettier](https://prettier.io) ^3.6.2
+- **Image Processing**: [Sharp](https://sharp.pixelplumbing.com) ^0.33.5
 
 ## 📊 Logging System
 
@@ -143,7 +144,7 @@ When creating a new project from this boilerplate, customize:
 
 - **Branding & Tokens**: Update theme colors, fonts, and tokens in `tailwind.config.mjs` and follow `docs/branding-ux-guidelines.md`.
 - **Content & Copy**: Replace example content in `src/pages/`, `src/components/`, and metadata in `src/layouts/`.
-- **Assets**: Swap logos and images in `public/` and `src/images/`.
+- **Assets**: Swap logos and images in `public/` and `src/assets/images/`.
 - **Environment**: Duplicate `env.example` to `.env` and set real values.
 - **SEO**: Update titles/descriptions/Open Graph in pages and `sitemap`/`robots`.
 - **Integrations**: Adjust logger settings (`src/lib/logger.ts`), email config, and deploy target (`vercel.json`).
@@ -184,16 +185,43 @@ Run tests in headed mode:
 pnpm test:headed
 ```
 
+Run tests in debug mode:
+
+```bash
+pnpm test:debug
+```
+
+Run email tests (requires Resend API key):
+
+```bash
+pnpm test:email
+```
+
+Run tests without email functionality:
+
+```bash
+pnpm test:no-email
+```
+
+Install Playwright browsers:
+
+```bash
+pnpm install:playwright
+```
+
 ## 📝 Scripts
 
 - `pnpm dev` - Start development server
+- `pnpm start` - Start development server (alias)
 - `pnpm build` - Build for production
 - `pnpm preview` - Preview production build
 - `pnpm lint` - Run ESLint
 - `pnpm lint:fix` - Fix ESLint errors
 - `pnpm format` - Format code with Prettier
-- `pnpm test` - Run Playwright tests
+- `pnpm format:check` - Check formatting
 - `pnpm type-check` - Run TypeScript type checking
+- `pnpm test` - Run Playwright tests
+- `pnpm clean` - Clean build artifacts
 
 ## 🚀 Deployment
 
@@ -272,7 +300,7 @@ export default {
       // Your custom theme extensions
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [],
 };
 ```
 
@@ -282,12 +310,29 @@ export default {
 astro-tailwind-boilerplate/
 ├── src/
 │   ├── components/          # Reusable components
+│   │   ├── ui/             # UI component library
+│   │   ├── Header.astro    # Site header
+│   │   ├── Footer.astro    # Site footer
+│   │   └── ContactForm.astro # Contact form component
 │   ├── layouts/            # Page layouts
+│   │   └── Layout.astro    # Main layout with SEO
 │   ├── lib/                # Utility libraries (including logger)
 │   ├── pages/              # Pages and API routes
+│   │   ├── api/            # API endpoints
+│   │   │   └── contact.ts  # Contact form API
+│   │   ├── index.astro     # Homepage
+│   │   ├── contact.astro   # Contact page
+│   │   ├── components.astro # Components showcase
+│   │   ├── robots.txt.ts   # Dynamic robots.txt
+│   │   └── sitemap.xml.ts  # Dynamic sitemap
+│   ├── assets/             # Static assets
+│   │   └── images/         # Image files
 │   └── styles/             # Global styles
-├── public/                 # Static assets
-├── e2e/                    # End-to-end tests
+├── public/                 # Public static assets
+├── tests/                  # End-to-end tests
+│   ├── e2e/               # Playwright tests
+│   ├── fixtures/          # Test data
+│   └── page-objects/      # Page object models
 ├── docs/                   # Documentation
 └── vercel.json            # Vercel configuration
 ```
@@ -319,3 +364,4 @@ If you encounter any issues or have questions:
 - [Tailwind CSS](https://tailwindcss.com) for the utility-first CSS framework
 - [Pino](https://getpino.io) for the excellent logging library
 - [Vercel](https://vercel.com) for the deployment platform
+- [Playwright](https://playwright.dev) for end-to-end testing

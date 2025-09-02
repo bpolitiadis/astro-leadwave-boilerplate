@@ -12,7 +12,7 @@ This document outlines the technical architecture, patterns, and implementation 
 ### Runtime & Build Tools
 - **Node.js**: >=18.0.0 - JavaScript runtime
 - **Vite**: Built-in with Astro - Fast build tool and dev server
-- **Sharp**: v0.33.2 - High-performance image processing
+- **Sharp**: v0.33.5 - High-performance image processing
 
 ### Development Tools
 - **ESLint**: v9.32.0 - Code linting and quality
@@ -33,7 +33,7 @@ This document outlines the technical architecture, patterns, and implementation 
 - **Use Case**: Content-heavy sites, blogs, documentation
 
 ### API Routes (Serverless)
-- **Runtime**: Node.js 20.x on Vercel
+- **Runtime**: Node.js 18.x on Vercel
 - **Execution**: On-demand serverless functions
 - **Use Case**: Contact forms, dynamic data, user interactions
 
@@ -49,11 +49,11 @@ This document outlines the technical architecture, patterns, and implementation 
 src/pages/
 ├── index.astro          # / (homepage)
 ├── contact.astro        # /contact
+├── components.astro     # /components (showcase)
 ├── api/
-│   ├── contact.ts       # POST /api/contact
-│   ├── sitemap.ts       # GET /api/sitemap
-│   └── robots.ts        # GET /api/robots
-└── robots.txt.ts        # /robots.txt
+│   └── contact.ts       # POST /api/contact
+├── robots.txt.ts        # /robots.txt
+└── sitemap.xml.ts       # /sitemap.xml
 ```
 
 ### Routing Conventions
@@ -75,19 +75,38 @@ src/pages/
 ---
 interface Props {
   title: string;
-  description: string;
+  description?: string;
   image?: string;
 }
 
-const { title, description, image = '/og-image.jpg' } = Astro.props;
+const {
+  title,
+  description = 'Production-ready Astro + Tailwind CSS boilerplate...',
+  image,
+} = Astro.props;
+
+// Use the optimized image if provided, otherwise use our default
+const ogImage = image || boilerplateImage6.src;
+
+// Log page view and component lifecycle
+logPageView(Astro.url.pathname);
+logComponentLifecycle('Layout', 'render', {
+  title,
+  pathname: Astro.url.pathname,
+});
 ---
 
-<html lang="en">
+<!doctype html>
+<html lang='en'>
   <head>
     <!-- SEO meta tags -->
   </head>
   <body>
-    <slot />
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>
 ```
@@ -98,197 +117,254 @@ const { title, description, image = '/og-image.jpg' } = Astro.props;
 - **Accessible**: Built with WCAG guidelines in mind
 - **Responsive**: Mobile-first design approach
 
-### Component Patterns
-- **Props Interface**: TypeScript interfaces for component props
-- **Slot System**: Flexible content injection
-- **Scoped Styles**: Component-specific CSS
-- **Client Scripts**: Interactive functionality when needed
-
-## ⚙️ State & Configuration
-
-### Environment Variables
-```env
-# Email Configuration
-RESEND_API_KEY=re_123456789
-FROM_EMAIL=noreply@yourdomain.com
-TO_EMAIL=hello@example.com
-
-# Site Configuration
-SITE_URL=https://yourdomain.com
-
-# Logging Configuration
-LOG_LEVEL=info
-LOG_ENVIRONMENT=production
-ENABLE_STRUCTURED_LOGGING=true
+### Component Library Structure
+```
+src/components/
+├── ui/                   # Base UI components
+│   ├── Button.astro     # Button component
+│   ├── Card.astro       # Card components
+│   ├── Input.astro      # Form input
+│   ├── Textarea.astro   # Form textarea
+│   ├── Badge.astro      # Badge component
+│   └── index.ts         # Component exports
+├── Header.astro         # Site header
+├── Footer.astro         # Site footer
+└── ContactForm.astro    # Contact form
 ```
 
-### Configuration Files
-- **`astro.config.mjs`**: Astro framework configuration
-- **`tailwind.config.mjs`**: Tailwind CSS customization
-- **`vercel.json`**: Vercel deployment settings
-- **`tsconfig.json`**: TypeScript compilation options
+## 🔌 API Architecture
 
-### Build Configuration
-```javascript
-// astro.config.mjs
-export default defineConfig({
-  site: 'https://your-domain.com',
-  integrations: [tailwind()],
-  build: {
-    inlineStylesheets: 'auto',
-    assets: '_astro'
-  },
-  image: {
-    service: { entrypoint: 'astro/assets/services/sharp' },
-    formats: ['webp', 'avif', 'jpeg'],
-    quality: 80
+### Contact Form API
+```typescript
+// src/pages/api/contact.ts
+export async function POST({ request }: APIContext) {
+  const startTime = Date.now();
+  
+  try {
+    // Log request
+    logRequest(request, startTime);
+    
+    // Process form data
+    const formData = await request.formData();
+    const email = formData.get('email') as string;
+    const message = formData.get('message') as string;
+    
+    // Send email via Resend
+    const result = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: TO_EMAIL,
+      subject: 'New Contact Form Submission',
+      html: generateEmailHTML({ email, message }),
+    });
+    
+    // Log success
+    logResponse(request, { status: 200 }, startTime);
+    
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    // Log error
+    logError(error, { context: 'contact_api' });
+    
+    return new Response(JSON.stringify({ error: 'Failed to send message' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
-});
-```
-
-## 🖼️ Assets & Images
-
-### Image Pipeline
-- **Source**: Place images in `src/images/`
-- **Processing**: Automatic optimization with Sharp
-- **Formats**: WebP, AVIF, JPEG with fallbacks
-- **Responsive**: Automatic responsive image generation
-
-### Static Assets
-- **Location**: `public/` directory
-- **Direct Access**: Referenced by URL path
-- **Examples**: Favicon, robots.txt, sitemap.xml
-
-### Asset Optimization
-```astro
----
-import Image from '../images/hero.jpg';
----
-
-<Image 
-  src={Image} 
-  alt="Hero image" 
-  width={800} 
-  height={600}
-  format="webp"
-  quality={80}
-/>
-```
-
-## 🔨 Build & Output
-
-### Build Process
-1. **Type Checking**: `astro check` for TypeScript validation
-2. **Asset Processing**: Image optimization and format conversion
-3. **CSS Processing**: Tailwind compilation and purging
-4. **Bundle Generation**: JavaScript bundling and optimization
-5. **Static Generation**: HTML page generation
-
-### Output Structure
-```
-dist/
-├── _astro/              # Optimized assets
-├── api/                 # API route handlers
-├── contact/             # Generated pages
-├── index.html           # Homepage
-├── sitemap.xml          # SEO sitemap
-└── robots.txt           # Search engine instructions
-```
-
-### Performance Features
-- **CSS Inlining**: Critical CSS automatically inlined
-- **Asset Optimization**: Compressed images and minified code
-- **Bundle Splitting**: Optimized chunk loading
-- **Tree Shaking**: Unused code elimination
-
-## 🔒 Security Considerations
-
-### Form Handling
-- **Input Validation**: Server-side validation for all forms
-- **CSRF Protection**: Built-in protection against cross-site attacks
-- **File Upload Security**: Type and size validation
-- **Rate Limiting**: Protection against abuse
-
-### API Security
-- **Input Sanitization**: Automatic sanitization of user input
-- **Error Handling**: Secure error messages without information leakage
-- **Authentication Ready**: Structure for JWT or session-based auth
-- **CORS Configuration**: Proper cross-origin resource sharing
-
-### Headers & Policies
-```json
-{
-  "X-Content-Type-Options": "nosniff",
-  "X-Frame-Options": "DENY",
-  "X-XSS-Protection": "1; mode=block",
-  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-  "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
 }
 ```
 
-## 📊 Monitoring & Observability
+### API Features
+- **Request Logging**: All API requests are logged with timing
+- **Error Handling**: Comprehensive error handling and logging
+- **Response Logging**: Response status and timing tracking
+- **Security**: Input validation and sanitization
 
-### Logging System
-- **Structured Logging**: JSON format for production
-- **Context Tracking**: Request correlation and user context
-- **Performance Monitoring**: Response time and resource usage
-- **Error Tracking**: Comprehensive error logging with stack traces
+## 📊 Logging Architecture
 
-### Performance Metrics
-- **Core Web Vitals**: LCP, FID, CLS tracking
-- **Build Metrics**: Bundle size and compilation time
-- **Runtime Metrics**: API response times and error rates
-- **User Experience**: Page load times and interaction metrics
-
-### Health Checks
-- **API Endpoints**: Health check endpoints for monitoring
-- **Build Status**: Automated build and test verification
-- **Deployment Health**: Post-deployment validation
-- **Performance Baselines**: Continuous performance monitoring
-
-## 🚀 Deployment Architecture
-
-### Vercel Integration
-- **Automatic Deployments**: Git-based deployment pipeline
-- **Edge Functions**: Global API route distribution
-- **CDN**: Global content delivery network
-- **Analytics**: Built-in performance and user analytics
-
-### Docker Support
-- **Multi-stage Builds**: Optimized production images
-- **Nginx Serving**: High-performance static file serving
-- **Environment Configuration**: Flexible environment variable management
-- **Production Ready**: Security and performance optimized
-
-## 🔄 Development Workflow
-
-### Local Development
-```bash
-# Start development server
-pnpm dev
-
-# Build for production
-pnpm build
-
-# Preview production build
-pnpm preview
-
-# Run tests
-pnpm test
+### Logger Configuration
+```typescript
+// src/lib/logger.ts
+const baseConfig = {
+  level: logLevel,
+  timestamp: pino.stdTimeFunctions.isoTime,
+  formatters: {
+    level: (label: string) => ({ level: label }),
+    log: (object: any) => ({
+      ...object,
+      env: isVercel ? 'vercel' : isProduction ? 'production' : 'development',
+      timestamp: new Date().toISOString(),
+    }),
+  },
+  mixin() {
+    return {
+      service: 'astro-app',
+      version: '1.0.0',
+    };
+  },
+};
 ```
 
-### Quality Gates
-- **Linting**: ESLint with Astro-specific rules
-- **Formatting**: Prettier for consistent code style
-- **Type Checking**: TypeScript compilation validation
-- **Testing**: Playwright end-to-end test suite
+### Specialized Loggers
+- **apiLogger**: API request/response logging
+- **pageLogger**: Page view and navigation logging
+- **componentLogger**: Component lifecycle logging
+- **emailLogger**: Email sending and delivery logging
+- **securityLogger**: Security event logging
 
-### Continuous Integration
-- **Automated Testing**: Run tests on every commit
-- **Build Verification**: Ensure production builds succeed
-- **Code Quality**: Automated linting and formatting
-- **Deployment**: Automatic deployment on successful builds
+### Logging Features
+- **Environment-Aware**: Different configs for dev/prod/vercel
+- **Structured**: JSON format for production, pretty for development
+- **Contextual**: Request context, timing, and metadata
+- **Performance**: Built-in performance tracking
 
----
+## 🧪 Testing Architecture
 
-*This architecture provides a solid foundation for building scalable, performant, and maintainable web applications with modern web technologies.*
+### Test Structure
+```
+tests/
+├── e2e/                  # End-to-end tests
+│   ├── contact.spec.ts   # Contact form tests
+│   └── home.spec.ts      # Homepage tests
+├── fixtures/             # Test data
+│   └── test-document.txt # Test fixtures
+└── page-objects/         # Page object models
+    ├── BasePage.ts       # Base page class
+    ├── ContactPage.ts    # Contact page model
+    ├── HomePage.ts       # Home page model
+    └── index.ts          # Exports
+```
+
+### Test Features
+- **Playwright**: Modern end-to-end testing
+- **Page Objects**: Maintainable test structure
+- **Fixtures**: Reusable test data
+- **CI/CD Ready**: Optimized for automated testing
+
+## 🎨 Styling Architecture
+
+### Tailwind Configuration
+```javascript
+// tailwind.config.mjs
+export default {
+  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  theme: {
+    extend: {
+      colors: {
+        // CSS custom properties for theming
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+          // Extended color palette
+          50: '#eff6ff',
+          100: '#dbeafe',
+          // ... more shades
+        },
+        // Semantic colors
+        success: { DEFAULT: '#10b981' },
+        warning: { DEFAULT: '#f59e0b' },
+        error: { DEFAULT: '#ef4444' },
+        info: { DEFAULT: '#3b82f6' },
+      },
+      // Custom animations
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+      },
+      // Custom spacing
+      spacing: {
+        '1': '0.25rem', /* 4px */
+        '2': '0.5rem',  /* 8px */
+        // ... more spacing values
+      },
+    },
+  },
+  plugins: [],
+};
+```
+
+### CSS Architecture
+- **CSS Custom Properties**: Theme variables for consistent theming
+- **Utility-First**: Tailwind utilities for rapid development
+- **Component Classes**: Reusable component styles
+- **Responsive Design**: Mobile-first approach
+
+## 🚀 Build & Deployment
+
+### Build Process
+1. **Type Checking**: `astro check` for TypeScript validation
+2. **Asset Optimization**: Sharp for image processing
+3. **Code Splitting**: Automatic by Astro/Vite
+4. **Minification**: CSS, JS, and HTML optimization
+5. **Static Generation**: Pre-rendered pages for performance
+
+### Deployment Options
+- **Vercel**: Optimized serverless deployment
+- **Docker**: Containerized deployment
+- **Static Hosting**: Any static hosting service
+- **Netlify**: Alternative deployment platform
+
+### Environment Configuration
+```env
+# Email Configuration
+RESEND_API_KEY=your_resend_api_key_here
+FROM_EMAIL=noreply@yourdomain.com
+TO_EMAIL=hello@example.com
+
+# Logging Configuration
+LOG_LEVEL=info
+LOG_ENVIRONMENT=development
+ENABLE_STRUCTURED_LOGGING=true
+```
+
+## 🔒 Security & Performance
+
+### Security Features
+- **Input Validation**: Form data validation and sanitization
+- **CSRF Protection**: Built-in CSRF protection
+- **Content Security Policy**: Configurable CSP headers
+- **HTTPS Only**: All deployments use HTTPS
+
+### Performance Features
+- **Static Generation**: Pre-rendered pages for fast loading
+- **Image Optimization**: WebP format, lazy loading
+- **Code Splitting**: Automatic by Astro
+- **Caching**: Optimized cache headers
+- **Minification**: CSS, JS, and HTML minification
+
+## 📱 Responsive Design
+
+### Breakpoint Strategy
+- **Mobile-First**: Base styles for mobile devices
+- **Progressive Enhancement**: Features added for larger screens
+- **Flexible Grids**: Responsive grid systems
+- **Touch-Friendly**: Optimized for touch interfaces
+
+### Component Responsiveness
+- **Flexible Layouts**: Components adapt to screen size
+- **Responsive Typography**: Scalable text sizing
+- **Adaptive Spacing**: Context-aware spacing
+- **Mobile Navigation**: Touch-optimized navigation
+
+## ♿ Accessibility
+
+### WCAG Compliance
+- **Keyboard Navigation**: Full keyboard accessibility
+- **Screen Reader Support**: Proper ARIA labels
+- **Color Contrast**: WCAG AA compliant contrast ratios
+- **Focus Management**: Clear focus indicators
+
+### Accessibility Features
+- **Semantic HTML**: Proper heading structure
+- **Alt Text**: Descriptive image alt text
+- **Form Labels**: Associated form labels
+- **Error Messages**: Clear error communication
