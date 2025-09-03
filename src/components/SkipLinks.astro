@@ -1,0 +1,79 @@
+---
+// Skip links for accessibility
+// These allow keyboard users to quickly navigate to main content
+---
+
+<div class="skip-links" data-testid="skip-links">
+  <a 
+    href="#main-content" 
+    class="skip-link"
+    data-testid="skip-to-main"
+  >
+    Skip to main content
+  </a>
+  <a 
+    href="#navigation" 
+    class="skip-link"
+    data-testid="skip-to-nav"
+  >
+    Skip to navigation
+  </a>
+  <a 
+    href="#footer" 
+    class="skip-link"
+    data-testid="skip-to-footer"
+  >
+    Skip to footer
+  </a>
+</div>
+
+<style>
+  .skip-links {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    z-index: 1000;
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 0 0 4px 0;
+    transition: top 0.3s ease;
+    z-index: 1001;
+  }
+
+  .skip-link:focus {
+    top: 0;
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  .skip-link:hover {
+    background: #333;
+  }
+</style>
+
+<script>
+  import { logComponentLifecycle } from '../lib/logger';
+
+  // Log component lifecycle
+  logComponentLifecycle('SkipLinks', 'interactive');
+
+  // Track skip link usage
+  document.querySelectorAll('.skip-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = e.target as HTMLAnchorElement;
+      logComponentLifecycle('SkipLinks', 'skip_link_used', {
+        href: target.href,
+        text: target.textContent?.trim(),
+      });
+    });
+  });
+</script>

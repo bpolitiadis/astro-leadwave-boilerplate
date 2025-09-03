@@ -17,10 +17,12 @@ export default [
           jsx: true,
         },
       },
+      env: {
+        browser: true,
+        es2022: true,
+        node: true,
+      },
       globals: {
-        browser: 'readonly',
-        es2022: 'readonly',
-        node: 'readonly',
         process: 'readonly',
         Response: 'readonly',
       },
@@ -38,6 +40,10 @@ export default [
       'no-var': 'error',
       'object-shorthand': 'error',
       'prefer-template': 'error',
+      // TypeScript handles undefined variables; this rule is noisy with TS types
+      'no-undef': 'off',
+      // Allow empty catch with explicit comment blocks
+      'no-empty': ['error', { allowEmptyCatch: true }],
     },
   },
   {

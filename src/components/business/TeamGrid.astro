@@ -1,0 +1,109 @@
+---
+import TeamMember from './TeamMember.astro';
+
+export interface TeamMemberData {
+  name: string;
+  role: string;
+  bio: string;
+  photo?: string;
+  credentials?: string[];
+  email?: string;
+  phone?: string;
+  social?: {
+    linkedin?: string;
+    twitter?: string;
+    facebook?: string;
+  };
+  specialties?: string[];
+}
+
+export interface Props {
+  team: TeamMemberData[];
+  title?: string;
+  description?: string;
+  columns?: 1 | 2 | 3 | 4;
+  showContact?: boolean;
+}
+
+const {
+  team,
+  title = 'Our Team',
+  description = 'Meet our experienced professionals',
+  columns = 3,
+  showContact = true,
+} = Astro.props;
+
+// Grid classes based on columns
+const gridClasses = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 md:grid-cols-2',
+  3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+  4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+};
+---
+
+<section class="py-16 bg-white" data-testid="team-grid">
+  <div class="container-custom">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" data-testid="team-grid-title">
+        {title}
+      </h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-testid="team-grid-description">
+        {description}
+      </p>
+    </div>
+    
+    <!-- Team Grid -->
+    <div class={`grid ${gridClasses[columns]} gap-8`} data-testid="team-grid-container">
+      {team.map((member) => (
+        <TeamMember
+          name={member.name}
+          role={member.role}
+          bio={member.bio}
+          photo={member.photo}
+          credentials={member.credentials}
+          email={showContact ? member.email : undefined}
+          phone={showContact ? member.phone : undefined}
+          social={member.social}
+          specialties={member.specialties}
+        />
+      ))}
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="text-center mt-12">
+      <a
+        href="/contact"
+        class="inline-flex items-center px-8 py-4 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+        data-testid="team-grid-cta"
+      >
+        Meet Our Team
+        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ team, columns, showContact }}>
+  import { logComponentLifecycle } from '../../lib/logger';
+
+  // Log component lifecycle
+  logComponentLifecycle('TeamGrid', 'interactive', {
+    teamCount: team.length,
+    columns,
+    showContact,
+  });
+
+  // Track main CTA click
+  const mainCta = document.querySelector('[data-testid="team-grid-cta"]');
+  if (mainCta) {
+    mainCta.addEventListener('click', () => {
+      logComponentLifecycle('TeamGrid', 'main_cta_clicked', {
+        teamCount: team.length,
+      });
+    });
+  }
+</script>

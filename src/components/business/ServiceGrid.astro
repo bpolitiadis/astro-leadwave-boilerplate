@@ -1,0 +1,115 @@
+---
+import ServiceCard from './ServiceCard.astro';
+
+export interface Service {
+  name: string;
+  description: string;
+  price?: number;
+  currency?: string;
+  icon?: string;
+  features?: string[];
+  popular?: boolean;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+export interface Props {
+  services: Service[];
+  title?: string;
+  description?: string;
+  columns?: 1 | 2 | 3 | 4;
+  showPrices?: boolean;
+}
+
+const {
+  services,
+  title = 'Our Services',
+  description = 'Professional services tailored to your needs',
+  columns = 3,
+  showPrices = true,
+} = Astro.props;
+
+// Grid classes based on columns
+const gridClasses = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 md:grid-cols-2',
+  3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+  4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+};
+---
+
+<section class="py-16 bg-gray-50" data-testid="service-grid">
+  <div class="container-custom">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" data-testid="service-grid-title">
+        {title}
+      </h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-testid="service-grid-description">
+        {description}
+      </p>
+    </div>
+    
+    <!-- Services Grid -->
+    <div class={`grid ${gridClasses[columns]} gap-8`} data-testid="service-grid-container">
+      {services.map((service) => (
+        <ServiceCard
+          name={service.name}
+          description={service.description}
+          price={showPrices ? service.price : undefined}
+          currency={service.currency}
+          icon={service.icon}
+          features={service.features}
+          popular={service.popular}
+          ctaText={service.ctaText}
+          ctaHref={service.ctaHref}
+        />
+      ))}
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="text-center mt-12">
+      <a
+        href="/contact"
+        class="inline-flex items-center px-8 py-4 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+        data-testid="service-grid-cta"
+      >
+        Get Started Today
+        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ services, columns, showPrices }}>
+  import { logComponentLifecycle } from '../../lib/logger';
+
+  // Log component lifecycle
+  logComponentLifecycle('ServiceGrid', 'interactive', {
+    serviceCount: services.length,
+    columns,
+    showPrices,
+  });
+
+  // Track service card clicks
+  document.querySelectorAll('[data-testid="service-cta"]').forEach((button, index) => {
+    button.addEventListener('click', () => {
+      logComponentLifecycle('ServiceGrid', 'service_clicked', {
+        serviceIndex: index,
+        serviceName: services[index]?.name,
+      });
+    });
+  });
+
+  // Track main CTA click
+  const mainCta = document.querySelector('[data-testid="service-grid-cta"]');
+  if (mainCta) {
+    mainCta.addEventListener('click', () => {
+      logComponentLifecycle('ServiceGrid', 'main_cta_clicked', {
+        serviceCount: services.length,
+      });
+    });
+  }
+</script>

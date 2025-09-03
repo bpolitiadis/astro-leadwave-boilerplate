@@ -1,0 +1,383 @@
+---
+import { getConsentManager } from '../lib/consent';
+
+// Get consent manager and configuration
+const consentManager = getConsentManager();
+const bannerConfig = consentManager.getBannerConfig();
+const preferencesConfig = consentManager.getPreferencesConfig();
+---
+
+<div id="consent-banner" class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg transform translate-y-full transition-transform duration-300" data-testid="consent-banner">
+  <div class="container-custom py-6">
+    <div class="max-w-4xl mx-auto">
+      <!-- Banner Content -->
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div class="flex-1">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">{bannerConfig.title}</h3>
+          <p class="text-gray-600 leading-relaxed">
+            {bannerConfig.description}
+          </p>
+          <div class="mt-3 flex flex-wrap gap-4 text-sm">
+            <a href={bannerConfig.privacyPolicy} class="text-primary-600 hover:text-primary-700 underline" data-testid="consent-privacy-link">
+              {bannerConfig.privacyPolicy}
+            </a>
+            <a href={bannerConfig.cookiePolicy} class="text-primary-600 hover:text-primary-700 underline" data-testid="consent-cookie-link">
+              {bannerConfig.cookiePolicy}
+            </a>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 lg:flex-shrink-0">
+          <button
+            id="consent-accept-required"
+            class="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            data-testid="consent-accept-required"
+          >
+            {bannerConfig.acceptRequired}
+          </button>
+          <button
+            id="consent-customize"
+            class="px-6 py-2 text-sm font-medium text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            data-testid="consent-customize"
+          >
+            {bannerConfig.customize}
+          </button>
+          <button
+            id="consent-accept-all"
+            class="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            data-testid="consent-accept-all"
+          >
+            {bannerConfig.acceptAll}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Consent Preferences Modal -->
+<div id="consent-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50" data-testid="consent-modal">
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">Cookie Preferences</h2>
+          <button
+            id="consent-modal-close"
+            class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            data-testid="consent-modal-close"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Modal Content -->
+        <div class="space-y-6">
+          <p class="text-gray-600">
+            Choose which cookies you want to accept. You can change these settings at any time.
+          </p>
+          
+          <!-- Required Cookies -->
+          <div class="border border-gray-200 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-lg font-semibold text-gray-900">{preferencesConfig.required.title}</h3>
+              <div class="flex items-center">
+                <span class="text-sm text-gray-500 mr-2">Always Active</span>
+                <div class="w-12 h-6 bg-primary-600 rounded-full flex items-center justify-end px-1">
+                  <div class="w-4 h-4 bg-white rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            <p class="text-gray-600 text-sm">{preferencesConfig.required.description}</p>
+          </div>
+          
+          <!-- Functional Cookies -->
+          <div class="border border-gray-200 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-lg font-semibold text-gray-900">{preferencesConfig.functional.title}</h3>
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  id="consent-functional"
+                  class="sr-only"
+                  data-testid="consent-functional"
+                />
+                <div class="relative">
+                  <div class="w-12 h-6 bg-gray-200 rounded-full shadow-inner"></div>
+                  <div class="absolute top-0 left-0 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 ease-in-out"></div>
+                </div>
+              </label>
+            </div>
+            <p class="text-gray-600 text-sm">{preferencesConfig.functional.description}</p>
+          </div>
+          
+          <!-- Analytics Cookies -->
+          <div class="border border-gray-200 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-lg font-semibold text-gray-900">{preferencesConfig.analytics.title}</h3>
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  id="consent-analytics"
+                  class="sr-only"
+                  data-testid="consent-analytics"
+                />
+                <div class="relative">
+                  <div class="w-12 h-6 bg-gray-200 rounded-full shadow-inner"></div>
+                  <div class="absolute top-0 left-0 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 ease-in-out"></div>
+                </div>
+              </label>
+            </div>
+            <p class="text-gray-600 text-sm">{preferencesConfig.analytics.description}</p>
+          </div>
+          
+          <!-- Marketing Cookies -->
+          <div class="border border-gray-200 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-lg font-semibold text-gray-900">{preferencesConfig.marketing.title}</h3>
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  id="consent-marketing"
+                  class="sr-only"
+                  data-testid="consent-marketing"
+                />
+                <div class="relative">
+                  <div class="w-12 h-6 bg-gray-200 rounded-full shadow-inner"></div>
+                  <div class="absolute top-0 left-0 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 ease-in-out"></div>
+                </div>
+              </label>
+            </div>
+            <p class="text-gray-600 text-sm">{preferencesConfig.marketing.description}</p>
+          </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-gray-200">
+          <button
+            id="consent-save-preferences"
+            class="flex-1 px-6 py-3 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            data-testid="consent-save-preferences"
+          >
+            Save Preferences
+          </button>
+          <button
+            id="consent-accept-all-modal"
+            class="flex-1 px-6 py-3 text-sm font-medium text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            data-testid="consent-accept-all-modal"
+          >
+            Accept All
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { getConsentManager } from '../lib/consent';
+  import { logComponentLifecycle } from '../lib/logger';
+
+  // Get consent manager
+  const consentManager = getConsentManager();
+  
+  // Log component lifecycle
+  logComponentLifecycle('ConsentBanner', 'interactive', {
+    hasConsented: consentManager.hasConsented(),
+  });
+
+  // DOM elements
+  const banner = document.getElementById('consent-banner');
+  const modal = document.getElementById('consent-modal');
+  const acceptRequiredBtn = document.getElementById('consent-accept-required');
+  const acceptAllBtn = document.getElementById('consent-accept-all');
+  const customizeBtn = document.getElementById('consent-customize');
+  const modalCloseBtn = document.getElementById('consent-modal-close');
+  const savePreferencesBtn = document.getElementById('consent-save-preferences');
+  const acceptAllModalBtn = document.getElementById('consent-accept-all-modal');
+  
+  // Checkbox elements
+  const functionalCheckbox = document.getElementById('consent-functional') as HTMLInputElement;
+  const analyticsCheckbox = document.getElementById('consent-analytics') as HTMLInputElement;
+  const marketingCheckbox = document.getElementById('consent-marketing') as HTMLInputElement;
+
+  // Show banner if consent is needed
+  function showBanner() {
+    if (banner && !consentManager.hasConsented()) {
+      banner.classList.remove('translate-y-full');
+      banner.classList.add('translate-y-0');
+    }
+  }
+
+  // Hide banner
+  function hideBanner() {
+    if (banner) {
+      banner.classList.add('translate-y-full');
+      banner.classList.remove('translate-y-0');
+    }
+  }
+
+  // Show modal
+  function showModal() {
+    if (modal) {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      
+      // Load current preferences
+      const state = consentManager.getConsentState();
+      if (functionalCheckbox) functionalCheckbox.checked = state.preferences.functional;
+      if (analyticsCheckbox) analyticsCheckbox.checked = state.preferences.analytics;
+      if (marketingCheckbox) marketingCheckbox.checked = state.preferences.marketing;
+    }
+  }
+
+  // Hide modal
+  function hideModal() {
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Save preferences from modal
+  function savePreferences() {
+    const preferences = {
+      functional: functionalCheckbox?.checked || false,
+      analytics: analyticsCheckbox?.checked || false,
+      marketing: marketingCheckbox?.checked || false,
+    };
+    
+    consentManager.setConsent(preferences);
+    hideModal();
+    hideBanner();
+    
+    logComponentLifecycle('ConsentBanner', 'preferences_saved', preferences);
+  }
+
+  // Event listeners
+  if (acceptRequiredBtn) {
+    acceptRequiredBtn.addEventListener('click', () => {
+      consentManager.acceptRequired();
+      hideBanner();
+      logComponentLifecycle('ConsentBanner', 'accept_required');
+    });
+  }
+
+  if (acceptAllBtn) {
+    acceptAllBtn.addEventListener('click', () => {
+      consentManager.acceptAll();
+      hideBanner();
+      logComponentLifecycle('ConsentBanner', 'accept_all');
+    });
+  }
+
+  if (customizeBtn) {
+    customizeBtn.addEventListener('click', () => {
+      showModal();
+      logComponentLifecycle('ConsentBanner', 'customize_clicked');
+    });
+  }
+
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener('click', hideModal);
+  }
+
+  if (savePreferencesBtn) {
+    savePreferencesBtn.addEventListener('click', savePreferences);
+  }
+
+  if (acceptAllModalBtn) {
+    acceptAllModalBtn.addEventListener('click', () => {
+      consentManager.acceptAll();
+      hideModal();
+      hideBanner();
+      logComponentLifecycle('ConsentBanner', 'accept_all_modal');
+    });
+  }
+
+  // Close modal on backdrop click
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        hideModal();
+      }
+    });
+  }
+
+  // Close modal on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+      hideModal();
+    }
+  });
+
+  // Toggle switch functionality
+  function setupToggleSwitch(checkbox: HTMLInputElement) {
+    if (!checkbox) return;
+    
+    const toggle = checkbox.parentElement?.querySelector('.relative');
+    if (!toggle) return;
+    
+    const slider = toggle.querySelector('.absolute');
+    if (!slider) return;
+    
+    function updateToggle() {
+      if (checkbox.checked) {
+        toggle?.classList.remove('bg-gray-200');
+        toggle?.classList.add('bg-primary-600');
+        slider?.classList.remove('left-0');
+        slider?.classList.add('left-6');
+      } else {
+        toggle?.classList.remove('bg-primary-600');
+        toggle?.classList.add('bg-gray-200');
+        slider?.classList.remove('left-6');
+        slider?.classList.add('left-0');
+      }
+    }
+    
+    checkbox.addEventListener('change', updateToggle);
+    updateToggle();
+  }
+
+  // Setup toggle switches
+  setupToggleSwitch(functionalCheckbox);
+  setupToggleSwitch(analyticsCheckbox);
+  setupToggleSwitch(marketingCheckbox);
+
+  // Show banner on page load
+  showBanner();
+
+  // Listen for consent changes
+  consentManager.addListener((state) => {
+    if (state.hasConsented) {
+      hideBanner();
+    } else {
+      showBanner();
+    }
+  });
+</script>
+
+<style>
+  /* Toggle switch styles */
+  .relative input:checked + .relative {
+    background-color: rgb(37 99 235);
+  }
+  
+  .relative input:checked + .relative .absolute {
+    transform: translateX(1.5rem);
+  }
+  
+  /* Smooth transitions */
+  .transform {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* Modal backdrop */
+  .bg-opacity-50 {
+    backdrop-filter: blur(4px);
+  }
+</style>

@@ -1,23 +1,45 @@
 ---
 import { logPageView, logComponentLifecycle } from '../lib/logger';
+import { generateFontPreloads } from '../lib/fonts';
+import { generateLocalBusinessSchema, generateWebSiteSchema, generateWebPageSchema, generateSchemaScripts } from '../lib/schema';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
+import SkipLinks from '../components/SkipLinks.astro';
 import boilerplateImage6 from '../assets/images/boilerplate-image-6.png';
 
 export interface Props {
   title: string;
   description?: string;
   image?: string;
+  canonical?: string;
+  noindex?: boolean;
 }
 
 const {
   title,
   description = 'Production-ready Astro + Tailwind CSS boilerplate with TypeScript, ESLint, Prettier, Playwright, and SEO optimization',
   image,
+  canonical,
+  noindex = false,
 } = Astro.props;
 
 // Use the optimized image if provided, otherwise use our default
 const ogImage = image || boilerplateImage6.src;
+const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site);
+
+// Generate font preloads
+const fontPreloads = generateFontPreloads();
+
+// Generate structured data schemas
+const localBusinessSchema = generateLocalBusinessSchema();
+const websiteSchema = generateWebSiteSchema();
+const webpageSchema = generateWebPageSchema(title, description, canonicalUrl.toString());
+const schemaScripts = generateSchemaScripts([
+  localBusinessSchema as unknown as Record<string, unknown>, 
+  websiteSchema, 
+  webpageSchema
+]);
 
 // Log page view and component lifecycle
 logPageView(Astro.url.pathname);
@@ -35,21 +57,76 @@ logComponentLifecycle('Layout', 'render', {
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
     <meta name='generator' content={Astro.generator} />
+    
+    <!-- Font preloading for performance -->
+    <Fragment set:html={fontPreloads} />
+    
+    <!-- Canonical URL -->
+    <link rel='canonical' href={canonicalUrl} />
+    
+    <!-- SEO Meta Tags -->
     <title>{title}</title>
+    {noindex && <meta name='robots' content='noindex, nofollow' />}
+    
+    <!-- Open Graph Meta Tags -->
     <meta property='og:type' content='website' />
     <meta property='og:title' content={title} />
     <meta property='og:description' content={description} />
     <meta property='og:image' content={new URL(ogImage, Astro.url)} />
+    <meta property='og:url' content={canonicalUrl} />
+    <meta property='og:site_name' content='Astro Tailwind Boilerplate' />
+    
+    <!-- Twitter Card Meta Tags -->
     <meta name='twitter:card' content='summary_large_image' />
     <meta name='twitter:title' content={title} />
     <meta name='twitter:description' content={description} />
     <meta name='twitter:image' content={new URL(ogImage, Astro.url)} />
+    
+    <!-- Performance hints -->
+    <link rel='dns-prefetch' href='//fonts.googleapis.com' />
+    <link rel='preconnect' href='//fonts.gstatic.com' crossorigin />
+    
+    <!-- Structured Data -->
+    <Fragment set:html={schemaScripts} />
   </head>
   <body>
+    <SkipLinks />
     <Header />
-    <main>
+    <main id="main-content">
       <slot />
     </main>
     <Footer />
+    <ConsentBanner />
+    
+    <!-- Performance monitoring script -->
+    <script>
+      // Performance monitoring initialization
+      import { initPerformanceMonitoring, measurePerformance } from '../lib/performance';
+      import { initLazyLoading, measureImageLoading } from '../lib/images';
+      import { measureFontLoading } from '../lib/fonts';
+      
+      // Initialize performance monitoring
+      initPerformanceMonitoring();
+      
+      // Initialize lazy loading
+      initLazyLoading();
+      
+      // Measure font loading performance
+      measureFontLoading();
+      
+      // Measure image loading performance
+      measureImageLoading();
+      
+      // Measure page load performance
+      measurePerformance('page_load', () => {
+        return new Promise((resolve) => {
+          if (document.readyState === 'complete') {
+            resolve(true);
+          } else {
+            window.addEventListener('load', () => resolve(true));
+          }
+        });
+      });
+    </script>
   </body>
 </html>

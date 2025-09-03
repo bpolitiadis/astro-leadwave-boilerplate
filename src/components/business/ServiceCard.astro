@@ -1,0 +1,116 @@
+---
+import { generateServiceSchema } from '../../lib/schema';
+
+export interface Props {
+  name: string;
+  description: string;
+  price?: number;
+  currency?: string;
+  icon?: string;
+  features?: string[];
+  popular?: boolean;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+const {
+  name,
+  description,
+  price,
+  currency = 'EUR',
+  icon,
+  features = [],
+  popular = false,
+  ctaText = 'Learn More',
+  ctaHref = '#',
+} = Astro.props;
+
+// Generate schema for this service
+const serviceSchema = generateServiceSchema(name, description, price, currency);
+---
+
+<div class="service-card group relative bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-primary-200 transition-all duration-300" data-testid="service-card">
+  {popular && (
+    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+      <span class="bg-primary-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+        Most Popular
+      </span>
+    </div>
+  )}
+  
+  <div class="text-center">
+    <!-- Service Icon -->
+    {icon && (
+      <div class="mx-auto w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary-100 transition-colors duration-300">
+        <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={icon} />
+        </svg>
+      </div>
+    )}
+    
+    <!-- Service Name -->
+    <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-300">
+      {name}
+    </h3>
+    
+    <!-- Service Description -->
+    <p class="text-gray-600 mb-4 leading-relaxed">
+      {description}
+    </p>
+    
+    <!-- Price -->
+    {price && (
+      <div class="mb-4">
+        <span class="text-3xl font-bold text-gray-900">
+          €{price}
+        </span>
+        <span class="text-gray-500 text-sm ml-1">
+          /service
+        </span>
+      </div>
+    )}
+    
+    <!-- Features -->
+    {features.length > 0 && (
+      <ul class="text-left space-y-2 mb-6">
+        {features.map((feature) => (
+          <li class="flex items-center text-sm text-gray-600">
+            <svg class="w-4 h-4 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            {feature}
+          </li>
+        ))}
+      </ul>
+    )}
+    
+    <!-- CTA Button -->
+    <a
+      href={ctaHref}
+      class={`inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+        popular
+          ? 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500'
+          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500'
+      }`}
+      data-testid="service-cta"
+    >
+      {ctaText}
+      <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+</div>
+
+<!-- Structured Data -->
+<script is:inline type="application/ld+json" set:html={JSON.stringify(serviceSchema)}></script>
+
+<style>
+  .service-card {
+    min-height: 100%;
+  }
+  
+  .service-card:hover {
+    transform: translateY(-2px);
+  }
+</style>
